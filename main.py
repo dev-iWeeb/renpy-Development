@@ -169,13 +169,14 @@ class PersonFactoryOld:
       return self.personObject
 
 
-class PersonFactory:
+class PersonFactory:  
 
-
+   @staticmethod
    def create (name, occupation, personstats, age=CONST_DEFAULT_AGE, surname=""):
       StatsData = PersonFactory.CreateStats (personstats)
       return Person(name, occupation, StatsData, age, surname)
-
+      
+   @staticmethod
    def CreateStats(Statistics, value =CONST_DEFAULT_STATISTIC):
       Liste = Stats()
 
@@ -186,7 +187,8 @@ class PersonFactory:
 
 
 class PersonFactoryStd (PersonFactory):
-
+   
+    @staticmethod
     def create (name, occupation, gender, personstats, age=CONST_DEFAULT_AGE, surname=""):
       StatsData = PersonFactoryStd.CreateStats (personstats)
       return PersonStd(name, occupation, gender, StatsData, age, surname)
@@ -194,18 +196,20 @@ class PersonFactoryStd (PersonFactory):
 
 class CollectionSceneFactory:
 
-
+      @staticmethod
       def CreateScene(nameScene):
          return Scene(nameScene)
 
-      def Create(nameScene:Scene):
+      @staticmethod
+      def Create(nameScene):
          Liste = {}
 
          for scene in nameScene:
             Liste[scene] = CollectionSceneFactory.CreateScene(scene)
 
          return Liste
-
+         
+      @staticmethod
       def UpdateScenesByStackToken (collectionScene, stackToken):
 
          if len(stackToken)>0 and len(collectionScene)>0:
@@ -276,33 +280,41 @@ class Stage (Token):
 
 class StackTokenFactory:
 
-
+   @staticmethod
    def CreateLaunch (nameScene):
       return Launch(nameScene)
-
+      
+   @staticmethod
    def CreateEnd (nameScene):
       return End(nameScene)
-
+      
+   @staticmethod
    def CreatedStage (nameScene, step):
       return Stage(nameScene, step)
-
+      
+   @staticmethod
    def IsTypeOfLaunch(token:Token):
       return isinstance (token, Launch)
 
+   @staticmethod
    def IsTypeOfEnd (token:Token):
       return isinstance (token, End)
 
+   @staticmethod
    def IsTypeOfStage(token:Token):
       return isinstance (token, Stage)
 
+   @staticmethod
    def AppendLaunchTokenCreated (collection, nameScene):
       Token = StackTokenFactory.CreateLaunch(nameScene)
       return collection.append (Token)
 
+   @staticmethod
    def AppendEndTokenCreated (collection, nameScene):
       Token = StackTokenFactory.CreateEnd (nameScene)
       return collection.append (Token)
 
+   @staticmethod
    def AppendStageTokenCreated (collection, nameScene, step=CONST_INCREASE, mode=True):
       Token = StackTokenFactory.CreatedStage(nameScene, step)
 
