@@ -1,4 +1,4 @@
-from src.libs import Launch, Logger, CollectionSceneFactory, StackTokenFactory, RequestFactory, ExtensionSceneModule, FonctionSort, GamePlay, GameSessionStd, InjectionFonction, InjectionFxSort, Action, Stage, Staging, SingleTone, Person, Token; Launch, Stage
+from src.libs import Completed, Launch, Logger, CollectionSceneFactory, PersonFactory, PersonFactoryStd, StackTokenFactory, RequestFactory, ExtensionSceneModule, FonctionSort, GamePlay, GameSessionStd, InjectionFonction, InjectionFxSort, Action, Stage, Staging, SingleTone, Person, Stats, Token; Launch, Stage, Stats, PersonFactory, PersonFactoryStd
 
 print("Repliy anc Try programiz.pro")
 
@@ -19,7 +19,7 @@ print("login et login 2 sont identique ?", login is login2)
 GameDemo = GamePlay()
 
 GameDemo.AppendTokenToStackToken(Launch("intro"))
-GameDemo.AppendTokenToStackToken(Stage("welcome",1).GetStep())
+GameDemo.AppendTokenToStackToken(Stage("welcome",1))
 
 
 GameDemo2 = GamePlay()
@@ -94,73 +94,7 @@ print ("******************Objet Staging et Action ********************")
 
 print("********** Scene *****************")
 
-tScene = Scene("Intro")
 
-print ('attribut de scene valeur :'+str(tScene.GetStatus()))
-
-tScene.SwitchStatus()
-
-print ('attribut de scene valeur :'+str(tScene.GetStatus()))
-
-
-print("**** Object collectionScene****")
-tempos =["intro","school","Welcome","atHome","interviews"]
-#tempos =["intro"]
-
-for tempo in tempos:
-   print(tempo)
-
-print ("nbre de scene : "+ str(len(tempos)))
-
-fifoListeScene = CollectionSceneFactory.Create(tempos)
-
-print (fifoListeScene["atHome"].GetName())
-print (fifoListeScene["atHome"].IsFinished())
-
-#fifoListeScene["intro"].SwitchToFinished()
-#print (fifoListeScene["intro"].IsFinished())
-
-fifoListeScene["Welcome"].GoNextStage()
-
-for nameScene, value in fifoListeScene.items():
-   sceneObject = value
-
-   try:
-      print (nameScene, sceneObject)
-      test = 1/0
-   except:
-      print("mince....")
-      break
-
-stackToken = []
-StackTokenFactory.AppendEndTokenCreated(stackToken, "intro")
-StackTokenFactory.AppendLaunchTokenCreated(stackToken, "atHome")
-StackTokenFactory.AppendStageTokenCreated(stackToken, "Welcome")
-
-fifoListeScene=CollectionSceneFactory.UpdateScenesByStackToken(fifoListeScene, stackToken)
-
-print("intro (end_False): "+str(fifoListeScene["intro"].IsFinished()))
-print("atHome (Launch_True): "+str(fifoListeScene["atHome"].GetStatus()))
-print("welcome (STage_0): "+str(fifoListeScene["Welcome"].GetStage()))
-
-listDeModule = ["school","interviews"]
-
-scenePlay = 2
-currentWeek = 1
-Community = {}
-triggerModules = Request_timing (fifoListeScene, 1,2)
-gamingModules = Request_gaming (fifoListeScene,{})
-#sortModule = Request_sort(fifoListeScene, FonctionSort)
-fonctionDeTirage = InjectionFxSort(FonctionSort)
-params =[1]
-
-ListeModulesTest = ExtensionSceneModule.Proceed (fifoListeScene, listDeModule, Community, scenePlay, currentWeek, fonctionDeTirage, params)
-
-#print (triggerModules.Check())
-
-print(triggerModules.GetStackToken())
-
-print (ListeModulesTest)
 
 
 
@@ -187,7 +121,7 @@ print(isinstance(e, Enfant))
 
 Jeton = ("Launch","End")
 
-jeton1 = End("Torride")
+jeton1 = Completed("Torride")
 
 jeton2 = Launch("Lancement")
 
@@ -196,7 +130,7 @@ print(jeton1.GetScene())
 
 print(jeton2.GetScene())
 
-print(isinstance(jeton2, End))
+print(isinstance(jeton2, Completed))
 
 print(isinstance(jeton2, Launch))
 
@@ -207,8 +141,8 @@ print(isinstance(jeton2, Launch))
 scoreScene = []
 
 scoreScene.append(StackTokenFactory.CreateLaunch("Declaration"))
-scoreScene.append(StackTokenFactory.CreateEnd("Preambule"))
-scoreScene.append(StackTokenFactory.CreateEnd("Presentation"))
+scoreScene.append(StackTokenFactory.CreateCompleted("Preambule"))
+scoreScene.append(StackTokenFactory.CreateCompleted("Presentation"))
 scoreScene.append(StackTokenFactory.CreateLaunch("Embauche"))
 
 for Scene in scoreScene:
