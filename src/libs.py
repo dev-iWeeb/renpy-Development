@@ -41,12 +41,14 @@ class Stats:
 class Person:
 
 
-   def __init__(self, name, occupation, Stats={}, age=CONST_DEFAULT_AGE,  surname = ""): 
+   def __init__(self, name, occupation, Stats={}, age=CONST_DEFAULT_AGE, Profile=[], surname = ""):
       self.__name = name
       self.SetStats(Stats)
       self.SetOlder (age)
       self.SetOccupation (occupation)
       self.SetSurname (surname)
+      self.SetProfile(Profile)
+
 
    def SetSurname (self, surname):
       self.__surname = surname
@@ -56,6 +58,9 @@ class Person:
 
    def SetOlder(self, older):
       self.__older = older
+
+   def SetProfile (self, Profile):
+      self.__Profile = Profile
 
    def SetOccupation(self, occupation):
       self.__occupation = occupation
@@ -68,6 +73,9 @@ class Person:
 
    def GetStats(self):
       return self.__Stats
+
+   def GetProfile (self):
+      return self.__Profile
 
    def GetOlder(self):
       return self.__older
