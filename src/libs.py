@@ -222,7 +222,7 @@ class CollectionSceneFactory:
 
                   collectionScene[Token.GetScene()].SwitchStatus()
 
-               elif StackTokenFactory.IsTypeOfEnd(Token):
+               elif StackTokenFactory.IsTypeOfCompleted(Token):
 
                   collectionScene[Token.GetScene()].SwitchToFinished()
 
@@ -312,7 +312,7 @@ class StackTokenFactory:
 
    @staticmethod
    def AppendEndTokenCreated (collection, nameScene):
-      Token = StackTokenFactory.CreateEnd (nameScene)
+      Token = StackTokenFactory.CreateCompleted (nameScene)
       return collection.append (Token)
 
    @staticmethod
@@ -503,7 +503,7 @@ class GamePlay:
       cls.__community = community
 
 
-   def Proceed():
+   def Proceed(self):
       pass
 
 
@@ -578,7 +578,7 @@ class InjectionFonction:
       self.Collection = Collection
       self.params = params
 
-   def GetFonctionSelected ():
+   def GetFonctionSelected (self):
     pass
 
 

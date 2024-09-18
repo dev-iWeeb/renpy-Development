@@ -1,4 +1,4 @@
-from src.libs import Completed, Launch, Logger, CollectionSceneFactory, PersonFactory, PersonFactoryStd, StackTokenFactory, RequestFactory, ExtensionSceneModule, FonctionSort, GamePlay, GameSessionStd, InjectionFonction, InjectionFxSort, Action, Stage, Staging, SingleTone, Person, Stats, Token; Launch, Stage, Stats, PersonFactory, PersonFactoryStd
+from src.libs import Completed, Launch, Logger, Scene, Request_timing, Request_gaming, CollectionSceneFactory, PersonFactory, PersonFactoryStd, StackTokenFactory, RequestFactory, ExtensionSceneModule, FonctionSort, GamePlay, GameSessionStd, InjectionFonction, InjectionFxSort, Action, Stage, Staging, SingleTone, Person, Stats, Token; Launch, Stage, Stats, PersonFactory, PersonFactoryStd
 
 print("Repliy anc Try programiz.pro")
 
@@ -94,7 +94,73 @@ print ("******************Objet Staging et Action ********************")
 
 print("********** Scene *****************")
 
+tScene = Scene("Intro")
 
+print ('attribut de scene valeur :'+str(tScene.GetStatus()))
+
+tScene.SwitchStatus()
+
+print ('attribut de scene valeur :'+str(tScene.GetStatus()))
+
+
+print("**** Object collectionScene****")
+tempos =["intro","school","Welcome","atHome","interviews"]
+#tempos =["intro"]
+
+for tempo in tempos:
+   print(tempo)
+
+print ("nbre de scene : "+ str(len(tempos)))
+
+fifoListeScene = CollectionSceneFactory.Create(tempos)
+
+print (fifoListeScene["atHome"].GetName())
+print (fifoListeScene["atHome"].IsFinished())
+
+#fifoListeScene["intro"].SwitchToFinished()
+#print (fifoListeScene["intro"].IsFinished())
+
+fifoListeScene["Welcome"].GoNextStage()
+
+for nameScene, value in fifoListeScene.items():
+   sceneObject = value
+
+   try:
+      print (nameScene, sceneObject)
+      test = 1/0
+   except:
+      print("mince....")
+      break
+
+stackToken = []
+StackTokenFactory.AppendEndTokenCreated(stackToken, "intro")
+StackTokenFactory.AppendLaunchTokenCreated(stackToken, "atHome")
+StackTokenFactory.AppendStageTokenCreated(stackToken, "Welcome")
+
+fifoListeScene=CollectionSceneFactory.UpdateScenesByStackToken(fifoListeScene, stackToken)
+
+print("intro (end_False): "+str(fifoListeScene["intro"].IsFinished()))
+print("atHome (Launch_True): "+str(fifoListeScene["atHome"].GetStatus()))
+print("welcome (STage_0): "+str(fifoListeScene["Welcome"].GetStage()))
+
+listDeModule = ["school","interviews"]
+
+scenePlay = 2
+currentWeek = 1
+Community = {}
+triggerModules = Request_timing (fifoListeScene, 1,2)
+gamingModules = Request_gaming (fifoListeScene,{})
+#sortModule = Request_sort(fifoListeScene, FonctionSort)
+fonctionDeTirage = InjectionFxSort(FonctionSort)
+params =[1]
+
+ListeModulesTest = ExtensionSceneModule.Proceed (fifoListeScene, listDeModule, Community, scenePlay, currentWeek, fonctionDeTirage, params)
+
+#print (triggerModules.Check())
+
+print(triggerModules.GetStackToken())
+
+print (ListeModulesTest)
 
 
 
