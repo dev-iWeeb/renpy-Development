@@ -89,6 +89,9 @@ class Person:
    def GetOccupation(self):
       return self.__occupation
 
+   def __dir__(self):
+      return ["Name : "+ str(self.GetName()) +" -Occupation : "+ str(self.GetOccupation())+" -Age :"+ str(self.GetOlder())]
+
 
 class PersonStd(Person):
 
