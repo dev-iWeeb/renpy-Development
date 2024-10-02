@@ -1,6 +1,7 @@
 CONST_INCREASE=1
 CONST_DESINCREASE= -1
 CONST_DEFAULT_AGE = 35
+CONST_DEFAULT_LEGAL_AGE = 18
 CONST_DEFAULT_STATISTIC = 5
 CONST_DEFAULT_INIT_STAGE = 0
 CONST_START_CYCLE_AT = 1
@@ -41,8 +42,10 @@ class Stats:
 class Person:
 
 
-   def __init__(self, name, occupation, Stats={}, age=CONST_DEFAULT_AGE, Profile=[], surname = ""):
+   def __init__(self, name, occupation, age= CONST_DEFAULT_AGE, Stats={}, Profile=[], surname = "", ageDefault = CONST_DEFAULT_AGE, legalAge = CONST_DEFAULT_LEGAL_AGE):
       self.__name = name
+      self.__ageDefault = ageDefault
+      self.__legalAge = legalAge
       self.SetStats(Stats)
       self.SetOlder (age)
       self.SetOccupation (occupation)
@@ -57,7 +60,10 @@ class Person:
       self.__Stats = Stats
 
    def SetOlder(self, older):
-      self.__older = older
+      if older >= self.__legalAge:
+         self.__older = older
+      else:
+         self.__older = self.__legalAge
 
    def SetProfile (self, Profile):
       self.__Profile = Profile
