@@ -89,8 +89,8 @@ class Person:
    def GetOccupation(self):
       return self.__occupation
 
-   def __dir__(self):
-      return ["Name : "+ str(self.GetName()) +" -Occupation : "+ str(self.GetOccupation())+" -Age :"+ str(self.GetOlder())]
+   def __str__(self):
+      return f'["Name : {self.GetName()} -Occupation : {self.GetOccupation()} -Age :{self.GetOlder()}]'
 
 
 class PersonStd(Person):
@@ -133,9 +133,9 @@ class PersonFactoryOld:
 class PersonFactory:  
 
    @staticmethod
-   def create (name, occupation, personstats, age=CONST_DEFAULT_AGE, surname=""):
+   def create (name, occupation, age= CONST_DEFAULT_AGE, personstats={}, Profile=[], surname = "", ageDefault = CONST_DEFAULT_AGE, legalAge = CONST_DEFAULT_LEGAL_AGE):
       StatsData = PersonFactory.CreateStats (personstats)
-      return Person(name, occupation, StatsData, age, surname)
+      return Person(name, occupation, age, StatsData, Profile, surname, ageDefault, legalAge)
 
    @staticmethod
    def CreateStats(Statistics, value =CONST_DEFAULT_STATISTIC):
