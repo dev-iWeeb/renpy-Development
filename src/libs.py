@@ -90,7 +90,7 @@ class Person:
       return self.__occupation
 
    def __str__(self):
-      return f'["Name : {self.GetName()} -Occupation : {self.GetOccupation()} -Age :{self.GetOlder()}]'
+      return f'Name : {self.GetName()} -Occupation : {self.GetOccupation()} -Age :{self.GetOlder()}'
 
 
 class PersonStd(Person):

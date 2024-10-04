@@ -1,10 +1,11 @@
 #coding:utf-8
 import sys
 import unittest
+sys.path.append('')
 
 from src.libs import Person, PersonFactory
 
-sys.path.append('..')
+
 from unittest import TestCase
 
 
@@ -43,9 +44,6 @@ class TestFactoryPerson (TestCase):
         self.assertIsInstance(pPerson, Person)
         print("with Default value..")
         print(pPerson)
-
-
-
 
 
 
