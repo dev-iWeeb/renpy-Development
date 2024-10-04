@@ -1,12 +1,8 @@
-#coding:utf-8
-import sys
 import unittest
-sys.path.append('')
-
-from src.libs import Person, PersonFactory
-
+import libs
 
 from unittest import TestCase
+from libs import Person, PersonFactory
 
 
 class TestPerson(TestCase):
