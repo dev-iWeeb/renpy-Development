@@ -2,8 +2,7 @@ import unittest
 import libs
 
 from unittest import TestCase
-from libs import Person, PersonFactory, PersonStd, Scene
-
+from libs import Person, PersonFactory, PersonStd, Stats, Scene
 
 
 class TestPerson(TestCase):
@@ -43,7 +42,6 @@ class TestPersonStd (TestCase):
     def test_if_personStd_is_created_with_defaultValue (self):
         self.assertIsInstance(self.pPerson, PersonStd)
 
-
     def test_if_personStd_is_updated_with_setter (self):
         expression = 5
         self.pPerson.SetBodyCount(expression)
@@ -53,12 +51,18 @@ class TestPersonStd (TestCase):
 
 class TestFactoryPerson (TestCase):
 
+    def setUp(self):
+        self.pPerson = PersonFactory.create("Debard","Teacher")
+        self.configStastic = ["Morale", "Santé", "Affinté", "Confiance"]
 
     def test_if_person_is_created_in_Factory_with_defaultValue(self):
-        pPerson = PersonFactory.create("Debard","Teacher")
-        self.assertIsInstance(pPerson, Person)
+        self.assertIsInstance(self.pPerson, Person)
         print("with Default value..")
-        print(pPerson)
+        print(self.pPerson)
+
+    def test_if_person_is_updated_by_statistic (self):
+         self.pPerson = PersonFactory.updatePersonByStats(self.pPerson, self.configStastic)
+         self.assertIsInstance(self.pPerson.GetStats(), Stats)
 
 
 class TestFactoryPersonStd (TestCase):

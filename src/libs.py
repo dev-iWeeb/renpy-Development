@@ -87,6 +87,9 @@ class Stats:
    def GetAllStatistics(self):
       return self.__stats
 
+   def __str__(self):
+      return self.__stats
+
 
 class Person:
 
@@ -126,7 +129,7 @@ class Person:
    def GetSurname(self):
       return self.__surname
 
-   def GetStats(self):
+   def GetStats(self)-> Stats:
       return self.__Stats
 
    def GetProfile (self):
@@ -174,6 +177,13 @@ class PersonFactory:
          Liste.StatisticAppend(statistic, value)
 
       return Liste
+
+   @staticmethod
+   def updatePersonByStats (ObjetPerson:Person, personstats):
+      StatsData = PersonFactory.CreateStats(personstats)
+      ObjetPerson.SetStats(StatsData)
+
+      return ObjetPerson
 
 
 class PersonFactoryStd:
