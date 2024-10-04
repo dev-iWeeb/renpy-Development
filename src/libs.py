@@ -1,14 +1,63 @@
-CONST_INCREASE=1
-CONST_DESINCREASE= -1
+CONST_INCREASE_DESINCREASE=1
 CONST_DEFAULT_AGE = 35
 CONST_DEFAULT_LEGAL_AGE = 18
 CONST_DEFAULT_STATISTIC = 5
 CONST_DEFAULT_INIT_STAGE = 0
 CONST_START_CYCLE_AT = 1
+CONST_DEFAULT_BODYCOUNT = 0
 CONST_SYST_MODULE_ENABLE = True
 
 
+class Scene:
 
+
+   def __init__(self, name, start=CONST_START_CYCLE_AT, status=True, stage=CONST_DEFAULT_INIT_STAGE,
+                index=CONST_INCREASE_DESINCREASE):
+      self.__SetName(name)
+      self.SetStart(start)
+      self.SetStatus(status)
+      self.SetStage(stage)
+      self.__index = index
+      self.__finished = False
+
+   def __SetName(self, name):
+      self.__name = name
+
+   def SetStart(self, start=CONST_START_CYCLE_AT):
+      self.__start = start
+
+   def SetStatus(self, status):
+      self.__status = status
+
+   def SetStage(self, stage=CONST_DEFAULT_INIT_STAGE):
+      self.__stage = stage
+
+   def SwitchStatus(self):
+      self.__status = not self.__status
+
+   def SwitchToFinished(self):
+      self.__finished = not self.__finished
+
+   def GoNextStage(self):
+      self.__stage += self.__index
+
+   def GoPreviousStage(self):
+      self.__stage -= self.__index
+
+   def GetName(self):
+      return self.__name
+
+   def GetStart(self):
+      return self.__start
+
+   def GetStatus(self):
+      return self.__status
+
+   def GetStage(self):
+      return self.__stage
+
+   def IsFinished(self):
+      return self.__finished
 
 
 class Stats:
@@ -23,10 +72,10 @@ class Stats:
    def SetStatistic(self, key,newValue):
       self.__stats[key]= newValue
 
-   def IncreaseStatistic (self, key, increase = CONST_INCREASE):
+   def IncreaseStatistic (self, key, increase = CONST_INCREASE_DESINCREASE):
       self.__stats[key]+=increase
 
-   def DecreaseStatistic (self, key, decrease = CONST_DESINCREASE):
+   def DecreaseStatistic (self, key, decrease = CONST_INCREASE_DESINCREASE):
       self.__stats[key]-=decrease
 
    def GetLenStats (self):
@@ -96,38 +145,18 @@ class Person:
 class PersonStd(Person):
 
 
-   def __init__(self,name, occupation, gender, Stats={}, age=CONST_DEFAULT_AGE,  surname = ""):
-      super().__init__(name, occupation, Stats, age, surname)
-      self.SetGender(gender)
+   def __init__(self,name, occupation, age= CONST_DEFAULT_AGE, Stats={}, Profile=[], surname = "", bodycount=CONST_DEFAULT_BODYCOUNT, ageDefault = CONST_DEFAULT_AGE, legalAge = CONST_DEFAULT_LEGAL_AGE):
+      super().__init__(name, occupation, age, Stats, Profile, surname, ageDefault, legalAge)
+      self.SetBodyCount(bodycount)
 
-   def SetGender (self, gender):
-      self.__gender = gender
+   def SetBodyCount (self, bodycount):
+      self.__bodyCount = bodycount
 
-   def GetGender (self):
-      return self.__gender
+   def GetBodyCount (self):
+      return self.__bodyCount
 
-
-class PersonFactoryOld:
-
-   def __init__(self, character, name, occupation, personstats, age=CONST_DEFAULT_AGE, surname=""):
-      self.personObject = self.createPerson (character, name, occupation, personstats, age, surname)
-
-   def createPerson(self, character, name, occupation, personstats, age, surname=""):
-      StatsData = self.__CreateStats (personstats)
-      personObject = Person(character, name, occupation, StatsData, age, surname)
-
-      return personObject
-
-   def __CreateStats(self, Statistics):
-      Liste = Stats()
-
-      for statistic in Statistics:
-         Liste.statisticApend(statistic, CONST_DEFAULT_STATISTIC)
-
-      return Liste
-
-   def getPerson(self):
-      return self.personObject
+   def __str__(self):
+      return f'Name : {self.GetName()} -Occupation : {self.GetOccupation()} -Age :{self.GetOlder()} -Bodycount : {self.GetBodyCount()}'
 
 
 class PersonFactory:  
@@ -147,17 +176,16 @@ class PersonFactory:
       return Liste
 
 
-class PersonFactoryStd (PersonFactory):
+class PersonFactoryStd:
 
-    @staticmethod
-    def create (name, occupation, gender, personstats, age=CONST_DEFAULT_AGE, surname=""):
-      StatsData = PersonFactoryStd.CreateStats (personstats)
-      return PersonStd(name, occupation, gender, StatsData, age, surname)
+   def create(name, occupation, age=CONST_DEFAULT_AGE, personstats = {}, profile= [], surname = "", bodycount=CONST_DEFAULT_BODYCOUNT,  ageDefault = CONST_DEFAULT_AGE, legalAge = CONST_DEFAULT_LEGAL_AGE):
+      Pfactory = PersonFactory.create(name, occupation, personstats, profile, age, surname,  ageDefault, legalAge)
+      return PersonStd(Pfactory.GetName(), Pfactory.GetOccupation(), bodycount, Pfactory.GetStats(), Pfactory.GetOlder())
 
 
 class Scene:
 
-   def __init__(self, name, start=CONST_START_CYCLE_AT, status=True, stage=CONST_DEFAULT_INIT_STAGE, index = CONST_INCREASE):
+   def __init__(self, name, start=CONST_START_CYCLE_AT, status=True, stage=CONST_DEFAULT_INIT_STAGE, index = CONST_INCREASE_DESINCREASE):
        self.__SetName(name)
        self.SetStart(start)
        self.SetStatus(status)
@@ -325,7 +353,7 @@ class StackTokenFactory:
       return collection.append (Token)
 
    @staticmethod
-   def AppendStageTokenCreated (collection, nameScene, step=CONST_INCREASE, mode=True):
+   def AppendStageTokenCreated (collection, nameScene, step=CONST_INCREASE_DESINCREASE, mode=True):
       Token = StackTokenFactory.CreatedStage(nameScene, step)
 
       if not mode:
