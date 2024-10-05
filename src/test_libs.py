@@ -85,8 +85,38 @@ class TestFactoryPersonStd (TestCase):
 
 class TestScene (TestCase):
 
+    def setUp(self):
+        self.tScene = Scene ( "intro")
+
     def test_if_scene_is_created_with_defaultValue(self):
-        pass
+        self. assertIsInstance(self.tScene, Scene)
+
+    def test_if_scene_switch_to_finished(self):
+        self.tScene.SwitchToFinished()
+        self.assertTrue(self.tScene.IsExecuted())
+
+    def test_if_scene_switch_to_Desactive(self):
+        self.tScene.SwitchStatus()
+        self.assertFalse(self.tScene.GetStatus())
+
+    def test_if_scene_go_to_nextStage(self):
+        print(f"stage of this scene : {self.tScene.GetStage()}")
+        expression = 1
+        self.tScene.GoNextStage()
+        print(f"next Stage of this scene : {self.tScene.GetStage()}")
+        self.assertEqual(self.tScene.GetStage(), expression)
+
+    def test_if_scene_jump_to_Stage(self):
+        print(f"stage of this scene : {self.tScene.GetStage()}")
+        expression = 5
+        self.tScene.SetStage(5)
+        print(f"next Stage of this scene : {self.tScene.GetStage()}")
+        self.assertEqual(self.tScene.GetStage(), expression)
+
+
+
+
+
 
 if __name__ == '__main__':
     unittest.main()

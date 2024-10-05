@@ -7,57 +7,7 @@ CONST_START_CYCLE_AT = 1
 CONST_DEFAULT_BODYCOUNT = 0
 CONST_SYST_MODULE_ENABLE = True
 
-
-class Scene:
-
-
-   def __init__(self, name, start=CONST_START_CYCLE_AT, status=True, stage=CONST_DEFAULT_INIT_STAGE,
-                index=CONST_INCREASE_DESINCREASE):
-      self.__SetName(name)
-      self.SetStart(start)
-      self.SetStatus(status)
-      self.SetStage(stage)
-      self.__index = index
-      self.__finished = False
-
-   def __SetName(self, name):
-      self.__name = name
-
-   def SetStart(self, start=CONST_START_CYCLE_AT):
-      self.__start = start
-
-   def SetStatus(self, status):
-      self.__status = status
-
-   def SetStage(self, stage=CONST_DEFAULT_INIT_STAGE):
-      self.__stage = stage
-
-   def SwitchStatus(self):
-      self.__status = not self.__status
-
-   def SwitchToFinished(self):
-      self.__finished = not self.__finished
-
-   def GoNextStage(self):
-      self.__stage += self.__index
-
-   def GoPreviousStage(self):
-      self.__stage -= self.__index
-
-   def GetName(self):
-      return self.__name
-
-   def GetStart(self):
-      return self.__start
-
-   def GetStatus(self):
-      return self.__status
-
-   def GetStage(self):
-      return self.__stage
-
-   def IsFinished(self):
-      return self.__finished
+CONFIG_STATISTIC = ["Affinity","Colère","Santé","Assurance"]
 
 
 class Stats:
@@ -165,7 +115,7 @@ class PersonStd(Person):
 class PersonFactory:  
 
    @staticmethod
-   def create (name, occupation, age= CONST_DEFAULT_AGE, personstats={}, Profile=[], surname = "", ageDefault = CONST_DEFAULT_AGE, legalAge = CONST_DEFAULT_LEGAL_AGE):
+   def create (name, occupation, age= CONST_DEFAULT_AGE, personstats=CONFIG_STATISTIC, Profile=[], surname = "", ageDefault = CONST_DEFAULT_AGE, legalAge = CONST_DEFAULT_LEGAL_AGE):
       StatsData = PersonFactory.CreateStats (personstats)
       return Person(name, occupation, age, StatsData, Profile, surname, ageDefault, legalAge)
 
@@ -189,59 +139,63 @@ class PersonFactory:
 class PersonFactoryStd:
 
    @staticmethod
-   def create(name, occupation, age=CONST_DEFAULT_AGE, personstats = {}, profile= [], surname = "", bodycount=CONST_DEFAULT_BODYCOUNT,  ageDefault = CONST_DEFAULT_AGE, legalAge = CONST_DEFAULT_LEGAL_AGE):
+   def create(name, occupation, age=CONST_DEFAULT_AGE, personstats = CONFIG_STATISTIC, profile= [], surname = "", bodycount=CONST_DEFAULT_BODYCOUNT,  ageDefault = CONST_DEFAULT_AGE, legalAge = CONST_DEFAULT_LEGAL_AGE):
       Pfactory = PersonFactory.create(name, occupation, age,personstats, profile,  surname,  ageDefault, legalAge)
       return PersonStd(Pfactory.GetName(), Pfactory.GetOccupation(), Pfactory.GetOlder(), Pfactory.GetStats(),Pfactory.GetProfile(), Pfactory.GetSurname(), bodycount)
 
 
 class Scene:
 
-   def __init__(self, name, start=CONST_START_CYCLE_AT, status=True, stage=CONST_DEFAULT_INIT_STAGE, index = CONST_INCREASE_DESINCREASE):
-       self.__SetName(name)
-       self.SetStart(start)
-       self.SetStatus(status)
-       self.SetStage(stage)
-       self.__index = index
-       self.__finished = False
-   
-   def __SetName (self, name):
+   def __init__(self, name, start=CONST_START_CYCLE_AT, status=True, stage=CONST_DEFAULT_INIT_STAGE, index=CONST_INCREASE_DESINCREASE):
+      self.__SetName(name)
+      self.SetStart(start)
+      self.SetStatus(status)
+      self.SetStage(stage)
+      self.__index = index
+      self.__finished = False
+
+   def __SetName(self, name):
       self.__name = name
-   
-   def SetStart (self, start=CONST_START_CYCLE_AT):
-      self.__start= start
-   
-   def SetStatus (self, status):
-      self.__status = status 
-   
+
+   def SetStart(self, start=CONST_START_CYCLE_AT):
+      self.__start = start
+
+   def SetStatus(self, status):
+      self.__status = status
+
    def SetStage(self, stage=CONST_DEFAULT_INIT_STAGE):
       self.__stage = stage
-   
-   def SwitchStatus (self):
+
+   def SwitchStatus(self):
       self.__status = not self.__status
-   
-   def SwitchToFinished (self):
+
+   def SwitchToFinished(self):
       self.__finished = not self.__finished
-   
+
    def GoNextStage(self):
       self.__stage += self.__index
-   
-   def GoPreviousStage (self):
+
+   def GoPreviousStage(self):
       self.__stage -= self.__index
-   
-   def GetName (self):
+
+   def GetName(self):
       return self.__name
-   
+
    def GetStart(self):
       return self.__start
-   
-   def GetStatus (self):
+
+   def GetStatus(self):
       return self.__status
-   
+
    def GetStage(self):
       return self.__stage
-   
-   def IsFinished(self):
+
+   def IsExecuted(self):
       return self.__finished
+
+
+class Module(Scene):
+   pass
 
 
 class CollectionSceneFactory:
