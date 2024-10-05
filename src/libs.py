@@ -188,9 +188,10 @@ class PersonFactory:
 
 class PersonFactoryStd:
 
+   @staticmethod
    def create(name, occupation, age=CONST_DEFAULT_AGE, personstats = {}, profile= [], surname = "", bodycount=CONST_DEFAULT_BODYCOUNT,  ageDefault = CONST_DEFAULT_AGE, legalAge = CONST_DEFAULT_LEGAL_AGE):
-      Pfactory = PersonFactory.create(name, occupation, personstats, profile, age, surname,  ageDefault, legalAge)
-      return PersonStd(Pfactory.GetName(), Pfactory.GetOccupation(), bodycount, Pfactory.GetStats(), Pfactory.GetOlder())
+      Pfactory = PersonFactory.create(name, occupation, age,personstats, profile,  surname,  ageDefault, legalAge)
+      return PersonStd(Pfactory.GetName(), Pfactory.GetOccupation(), Pfactory.GetOlder(), Pfactory.GetStats(),Pfactory.GetProfile(), Pfactory.GetSurname(), bodycount)
 
 
 class Scene:

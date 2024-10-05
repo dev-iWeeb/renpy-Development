@@ -2,8 +2,7 @@ import unittest
 import libs
 
 from unittest import TestCase
-from libs import Person, PersonFactory, PersonStd, Stats, Scene
-
+from libs import Person, PersonFactory, PersonStd, Stats, PersonFactoryStd, Scene
 
 class TestPerson(TestCase):
 
@@ -63,13 +62,25 @@ class TestFactoryPerson (TestCase):
     def test_if_person_is_updated_by_statistic (self):
          self.pPerson = PersonFactory.updatePersonByStats(self.pPerson, self.configStastic)
          self.assertIsInstance(self.pPerson.GetStats(), Stats)
+         self.assertGreater(self.pPerson.GetStats().GetLenStats(), 0)
+
 
 
 class TestFactoryPersonStd (TestCase):
 
+    def setUp(self):
+        self.configStastic = ["Morale", "Santé", "Affinté", "Confiance"]
 
     def test_if_person_is_created_in_Factory_with_defaultValue(self):
-        pass
+        self.pPerson = PersonFactoryStd.create("Debard","Teacher")
+        self.assertIsInstance(self.pPerson, Person)
+        print("with Default value..")
+        print(self.pPerson)
+
+    def test_if_person_is_created_in_Factory_with_new_params(self):
+        expression = 5
+        self.pPerson = PersonFactoryStd.create("Debard", "Teacher", 35, {},[], "",5)
+        self.assertIsInstance(self.pPerson, PersonStd)
 
 
 class TestScene (TestCase):
