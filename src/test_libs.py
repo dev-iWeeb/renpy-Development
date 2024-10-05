@@ -2,7 +2,7 @@ import unittest
 import libs
 
 from unittest import TestCase
-from libs import Person, PersonFactory, PersonStd, Stats, PersonFactoryStd, Scene
+from libs import Person, PersonFactory, PersonStd, Stats, PersonFactoryStd, Scene, Module
 
 class TestPerson(TestCase):
 
@@ -91,6 +91,10 @@ class TestScene (TestCase):
     def test_if_scene_is_created_with_defaultValue(self):
         self. assertIsInstance(self.tScene, Scene)
 
+    def test_if_Module_is_created_with_defaultValue(self):
+        tModule = Module ("phone")
+        self.assertIsInstance(tModule, Module)
+
     def test_if_scene_switch_to_finished(self):
         self.tScene.SwitchToFinished()
         self.assertTrue(self.tScene.IsExecuted())
@@ -109,12 +113,14 @@ class TestScene (TestCase):
     def test_if_scene_jump_to_Stage(self):
         print(f"stage of this scene : {self.tScene.GetStage()}")
         expression = 5
-        self.tScene.SetStage(5)
+        self.tScene.SetStage(expression)
         print(f"next Stage of this scene : {self.tScene.GetStage()}")
         self.assertEqual(self.tScene.GetStage(), expression)
 
-
-
+    def test_if_scene_jump_to_negativeStage(self):
+        expression = -3
+        self.tScene.SetStage(expression)
+        self.assertGreaterEqual(self.tScene.GetStage(), 0)
 
 
 

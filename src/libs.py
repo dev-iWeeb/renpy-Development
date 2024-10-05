@@ -164,7 +164,8 @@ class Scene:
       self.__status = status
 
    def SetStage(self, stage=CONST_DEFAULT_INIT_STAGE):
-      self.__stage = stage
+      if stage >=0:
+         self.__stage = stage
 
    def SwitchStatus(self):
       self.__status = not self.__status
@@ -176,7 +177,8 @@ class Scene:
       self.__stage += self.__index
 
    def GoPreviousStage(self):
-      self.__stage -= self.__index
+      if self.__stage >= 0:
+         self.__stage -= self.__index
 
    def GetName(self):
       return self.__name
