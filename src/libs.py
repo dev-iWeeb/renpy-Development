@@ -615,10 +615,9 @@ class Staging:  # Version python
 class Do:
 
 
-    def __int__(self):
+    def __init__(self):
       self.__to = []
       self.__from = []
-
 
     def SetTo (self, namePerson):
 

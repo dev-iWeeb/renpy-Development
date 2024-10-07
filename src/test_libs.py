@@ -168,6 +168,8 @@ class Test_Staging(TestCase):
         self.nameP1 = "Constante"
         self.nameP2 = "PtitJean"
         self.nameP3 = "Gus"
+        self.members = [self.nameP2, self.nameP3]
+
         pP1 = PersonStd("Constante","Fleuriste")
         pP2 = PersonStd("PtitJean","Etudiant",16)
         self.community = {}
@@ -205,6 +207,15 @@ class Test_Staging(TestCase):
         self.assertEqual(self.Staging.GetAction().kiss, self.kiss)
         self.assertEqual(self.Staging.GetAction().enlacer, self.enlacer)
         self.assertEqual(self.Staging.GetAction().caresser, self.caresser)
+
+    def test_simulation_of_code_to_action(self):
+        self.Staging.GetAction().SetTo(self.nameP1)
+        self.assertTrue(isinstance(self.Staging.GetAction().GetTo(), (list, dict, tuple)))
+        print(self.Staging.GetAction().GetTo())
+        self.assertEqual(self.Staging.GetAction().speak, self.speak)
+        self.Staging.GetAction().SetTo(self.members)
+        self.assertTrue(isinstance(self.Staging.GetAction().GetTo(), (list, dict, tuple)))
+        print(self.Staging.GetAction().GetTo())
 
 
     def tearDown(self):
