@@ -2,7 +2,8 @@ import unittest
 import libs
 
 from unittest import TestCase
-from libs import Person, PersonFactory, PersonStd, Stats, PersonFactoryStd, Scene, Module
+from libs import Person, PersonFactory, PersonStd, Stats, PersonFactoryStd, Scene, Module, Do, DialogueStd, Staging
+
 
 class TestPerson(TestCase):
 
@@ -89,7 +90,7 @@ class TestScene (TestCase):
         self.tScene = Scene ( "intro")
 
     def test_if_scene_is_created_with_defaultValue(self):
-        self. assertIsInstance(self.tScene, Scene)
+        self.assertIsInstance(self.tScene, Scene)
 
     def test_if_Module_is_created_with_defaultValue(self):
         tModule = Module ("phone")
@@ -121,6 +122,93 @@ class TestScene (TestCase):
         expression = -3
         self.tScene.SetStage(expression)
         self.assertGreaterEqual(self.tScene.GetStage(), 0)
+
+
+class Test_DialogueStd(TestCase):
+
+
+    def setUp(self):
+        self.speak = "Speak"
+        self.laugh = "Laugh"
+        self.shout = "Shout"
+        self.DialogueStd = DialogueStd(self.speak,self.laugh,self.shout)
+
+    def test_if_class_DialogueStd_is_created(self):
+        self.assertIsInstance(self.DialogueStd,DialogueStd)
+        self.assertIsInstance(self.DialogueStd, Do)
+
+    def test_if_attr_DialogueStd_accessible(self):
+        self.assertEqual(self.DialogueStd.speak, self.speak)
+        self.assertEqual(self.DialogueStd.laugh, self.laugh)
+        self.assertEqual(self.DialogueStd.shout, self.shout)
+        self.assertNotEqual(self.DialogueStd.speak,self.shout)
+
+
+class Test_Staging(TestCase):
+
+    def setUp(self):
+        self.speak = "Speak"
+        self.laugh = "Laugh"
+        self.shout = "Shout"
+        self.DialogueStd = DialogueStd(self.speak, self.laugh, self.shout)
+
+        self.caresser = "Caresser"
+        self.kiss = "Kiss"
+        self.enlacer = "Enlacer"
+
+        class GesteStd(Do):
+
+            def __init__(self, caresser, kiss, enlacer):
+                self.caresser = caresser
+                self.kiss = kiss
+                self.enlacer = enlacer
+
+        self.GesteStd = GesteStd(self.caresser, self.kiss, self.enlacer)
+
+        self.nameP1 = "Constante"
+        self.nameP2 = "PtitJean"
+        self.nameP3 = "Gus"
+        pP1 = PersonStd("Constante","Fleuriste")
+        pP2 = PersonStd("PtitJean","Etudiant",16)
+        self.community = {}
+        self.community[self.nameP1] = pP1
+        self.community[self.nameP2] = pP2
+
+        self.Staging = Staging( self.community,self.DialogueStd)
+
+
+    def test_if_Staging_is_created(self):
+        self.assertIsInstance(self.Staging, Staging)
+
+    def test_of_GestionMembers_in_ActionClass(self):
+        print(f"nbre members dans action : {len(self.Staging.GetPersons())}")
+        self.Staging.ToSTagePerson(self.nameP1)
+        self.assertGreater(len(self.Staging.GetPersons()), 0)
+        print(f"nbre members dans action après inclusion: {len(self.Staging.GetPersons())}")
+        self.Staging.ToSTagePerson(self.nameP1)
+        print(f"nbre members dans action après inclusion: {len(self.Staging.GetPersons())}")
+        self.Staging.ToSTagePerson(self.nameP3)
+        print(f"nbre members dans action après inclusion: {len(self.Staging.GetPersons())}")
+        self.Staging.ToSTagePerson(self.nameP2)
+        print(f"nbre members dans action après inclusion: {len(self.Staging.GetPersons())}")
+        self.Staging.ExcludePerson(self.nameP1)
+        print(f"nbre members dans action après inclusion: {len(self.Staging.GetPersons())}")
+        self.Staging.ExcludePerson(self.nameP3)
+
+
+    def test_if_attr_of_Action_is_accessible(self):
+        self.assertEqual(self.Staging.GetAction().speak, self.speak)
+        self.assertEqual(self.Staging.GetAction().laugh, self.laugh)
+        self.assertEqual(self.Staging.GetAction().shout, self.shout)
+        self.Staging.SetAction(self.GesteStd)
+        self.assertNotEqual(self.Staging.GetAction().kiss, self.speak)
+        self.assertEqual(self.Staging.GetAction().kiss, self.kiss)
+        self.assertEqual(self.Staging.GetAction().enlacer, self.enlacer)
+        self.assertEqual(self.Staging.GetAction().caresser, self.caresser)
+
+
+    def tearDown(self):
+        print(f"nbre members dans action Actuellement : {len(self.Staging.GetPersons())}")
 
 
 
