@@ -614,13 +614,35 @@ class Staging:  # Version python
 
 class Do:
 
+
     def __int__(self):
-        pass
+      self.__to = []
+      self.__from = []
+
+
+    def SetTo (self, namePerson):
+
+      if not isinstance(namePerson, (list, dict, tuple)):
+         self.__to.append(namePerson)
+      else:
+         self.__to = namePerson
+
+      return self.__to
+
+    def SetFrom (self, namePerson):
+       self.__from = namePerson
+
+    def GetTo (self):
+       return self.__to
+
+    def GetFrom(self):
+       return  self.__from
 
 
 class DialogueStd(Do):
 
     def __init__(self, speak, laugh, shout):
+        super().__init__()
         self.speak = speak
         self.laugh = laugh
         self.shout = shout
