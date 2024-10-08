@@ -2,7 +2,7 @@ import unittest
 import libs
 
 from unittest import TestCase
-from libs import Person, PersonFactory, PersonStd, Stats, PersonFactoryStd, Scene, Module, Do, DialogueStd, Staging, DialogueStaticStd
+from libs import Person, PersonFactory, PersonStd, Stats, PersonFactoryStd, Scene, Module, Do, DialogueStd, Staging, DialogueDefault
 
 
 class TestPerson(TestCase):
@@ -176,7 +176,7 @@ class Test_Staging(TestCase):
         self.community[self.nameP1] = pP1
         self.community[self.nameP2] = pP2
 
-        self.Staging = Staging( self.community,DialogueStaticStd)
+        self.Staging = Staging( self.community,DialogueDefault)
 
 
     def test_if_Staging_is_created(self):
@@ -220,7 +220,7 @@ class Test_Staging(TestCase):
         print(self.Staging.GetAction().GetTo())
     """
 
-    def test_simulation_of_code_to_DialogueStaticStd(self):
+    def test_simulation_of_code_to_DialogueDefault(self):
         print (self.Staging.GetAction().speak(self.nameP1, self.nameP2))
 
     def tearDown(self):

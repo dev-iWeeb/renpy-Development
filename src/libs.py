@@ -646,11 +646,16 @@ class DialogueStd(Do):
         self.laugh = laugh
         self.shout = shout
 
-class DialogueStaticStd:
+
+class DialogueDefault:
+
+    do = Do()
 
     @staticmethod
-    def speak (exp, dest): #TODO implemanter la class do ds les méthode Static
-        return [f'{exp} , {dest}']
+    def speak (exp, dest): #TODO implémanter la class do ds les méthodes Statics
+        DialogueDefault.do.SetTo(exp)
+        DialogueDefault.do.SetFrom(dest)
+        return [f'{exp} , {dest} , {DialogueDefault.do.GetTo()},  {DialogueDefault.do.GetFrom()}']
 
     @staticmethod
     def laugh (exp, dest):
