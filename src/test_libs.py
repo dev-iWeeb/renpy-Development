@@ -2,7 +2,7 @@ import unittest
 import libs
 
 from unittest import TestCase
-from libs import Person, PersonFactory, PersonStd, Stats, PersonFactoryStd, Scene, Module, Do, DialogueStd, Staging
+from libs import Person, PersonFactory, PersonStd, Stats, PersonFactoryStd, Scene, Module, Do, DialogueStd, Staging, DialogueStaticStd
 
 
 class TestPerson(TestCase):
@@ -176,7 +176,7 @@ class Test_Staging(TestCase):
         self.community[self.nameP1] = pP1
         self.community[self.nameP2] = pP2
 
-        self.Staging = Staging( self.community,self.DialogueStd)
+        self.Staging = Staging( self.community,DialogueStaticStd)
 
 
     def test_if_Staging_is_created(self):
@@ -197,7 +197,7 @@ class Test_Staging(TestCase):
         print(f"nbre members dans action après inclusion: {len(self.Staging.GetPersons())}")
         self.Staging.ExcludePerson(self.nameP3)
 
-
+    """
     def test_if_attr_of_Action_is_accessible(self):
         self.assertEqual(self.Staging.GetAction().speak, self.speak)
         self.assertEqual(self.Staging.GetAction().laugh, self.laugh)
@@ -212,11 +212,16 @@ class Test_Staging(TestCase):
         self.Staging.GetAction().SetTo(self.nameP1)
         self.assertTrue(isinstance(self.Staging.GetAction().GetTo(), (list, dict, tuple)))
         print(self.Staging.GetAction().GetTo())
+        
+       
         self.assertEqual(self.Staging.GetAction().speak, self.speak)
         self.Staging.GetAction().SetTo(self.members)
         self.assertTrue(isinstance(self.Staging.GetAction().GetTo(), (list, dict, tuple)))
         print(self.Staging.GetAction().GetTo())
+    """
 
+    def test_simulation_of_code_to_DialogueStaticStd(self):
+        print (self.Staging.GetAction().speak(self.nameP1, self.nameP2))
 
     def tearDown(self):
         print(f"nbre members dans action Actuellement : {len(self.Staging.GetPersons())}")

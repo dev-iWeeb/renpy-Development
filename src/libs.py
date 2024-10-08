@@ -583,7 +583,7 @@ class Staging:  # Version python
         def SetMembers(self, Members):
             self.__Members = Members
 
-        def Do(self):
+        def Do(self): #Emplacement de dialogue staticSTD
             return self.__Do
 
         def ChangeDoing(self, Do):
@@ -605,7 +605,7 @@ class Staging:  # Version python
     def GetPersons(self):
         return self.__Action.GetMembers()
 
-    def GetAction(self):
+    def GetAction(self): # emplacement Static Dialogue
         return self.__Action.Do()
 
     def SetAction(self, Do):
@@ -645,5 +645,21 @@ class DialogueStd(Do):
         self.speak = speak
         self.laugh = laugh
         self.shout = shout
+
+class DialogueStaticStd:
+
+    @staticmethod
+    def speak (exp, dest): #TODO implemanter la class do ds les méthode Static
+        return [f'{exp} , {dest}']
+
+    @staticmethod
+    def laugh (exp, dest):
+        pass
+
+    @staticmethod
+    def shout (exp, dest):
+        pass
+
+
 
 
