@@ -649,21 +649,40 @@ class DialogueStd(Do):
 
 class DialogueDefault:
 
-    do = Do()
+    do = None
 
     @staticmethod
-    def speak (exp, dest): #TODO implémanter la class do ds les méthodes Statics
+    def speak (exp, dest):
+        DialogueDefault.do = Do()
         DialogueDefault.do.SetTo(exp)
         DialogueDefault.do.SetFrom(dest)
         return [f'{exp} , {dest} , {DialogueDefault.do.GetTo()},  {DialogueDefault.do.GetFrom()}']
 
     @staticmethod
-    def laugh (exp, dest):
-        pass
-
-    @staticmethod
     def shout (exp, dest):
         pass
+
+
+class ProfileFactory:
+
+    Profiles ={}
+
+    @staticmethod
+    def InsertImpression (ObjetPersonExp: Person, ObjetPersonDest: Person, configProfil = {}):
+        profil = dict()
+        profil["impressions"]= dict()
+        profil["impressions"][ObjetPersonDest.GetName()]= configProfil
+        ObjetPersonExp.SetProfile(profil)
+        return  ObjetPersonExp
+
+    @staticmethod
+    def InsertSecret(ObjetPersonDest: Person, secret):
+        profil ={}
+        profil["secrets"]=[]
+        profil["secrets"].append(secret)
+
+
+
 
 
 
