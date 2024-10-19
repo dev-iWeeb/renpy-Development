@@ -2,7 +2,7 @@ import unittest
 import libs
 
 from unittest import TestCase
-from libs import Person, PersonFactory, PersonStd, Stats, PersonFactoryStd, Scene, Module, Do, DialogueStd, Staging, DialogueDefault
+from libs import Person, PersonFactory, PersonStd, Stats, PersonFactoryStd, Scene, Module, Do, DialogueStd, Staging, InteractDefault
 
 
 class TestPerson(TestCase):
@@ -124,63 +124,73 @@ class TestScene (TestCase):
         self.assertGreaterEqual(self.tScene.GetStage(), 0)
 
 
-class Test_DialogueStd(TestCase):
-
+class Test_Action_DialogueDefault(TestCase):
 
     def setUp(self):
-        self.speak = "Speak"
-        self.laugh = "Laugh"
-        self.shout = "Shout"
-        self.DialogueStd = DialogueStd(self.speak,self.laugh,self.shout)
+        self.nameP1 = "Constante"
+        self.nameP2 = "PtitJean"
+        self.nameP3 = "Gus"
+        self.nameP4 = "PtitVier"
+        # self.members = [self.nameP2, self.nameP3]
+        self.pP1 = PersonStd( self.nameP1 , "Fleuriste")
+        self.pP2 = PersonStd( self.nameP2, "Etudiant", 16)
+        self.pP3 = PersonStd(self.nameP3, "Etudiant", 14)
+        self.pP4 = PersonStd(self.nameP4,"Jardinier")
+        self.members = [self.pP2, self.pP3]
+        self.community = {self.nameP1: self.pP1, self.nameP2: self.pP2 , self.nameP3: self.pP3}
+        self.Staging = Staging(self.community, InteractDefault)
+        self.Staging.ToSTagePerson(self.nameP1)
+        self.Staging.ToSTagePerson(self.nameP2)
+        self.Staging.ToSTagePerson(self.nameP3)
 
-    def test_if_class_DialogueStd_is_created(self):
-        self.assertIsInstance(self.DialogueStd,DialogueStd)
-        self.assertIsInstance(self.DialogueStd, Do)
+    def test_person_affected_to_Goto_and_GetFrom_for_speaking_and_using_DialogueDefault(self):
+        self.assertEqual(self.nameP1, str(self.Staging.GetAction().Speak(self.pP1, self.pP2).GetFrom().GetName()))
+        self.assertEqual(self.nameP2,str(self.Staging.GetAction().Speak(self.pP1, self.pP2).GetTo()[0].GetName()))
 
-    def test_if_attr_DialogueStd_accessible(self):
-        self.assertEqual(self.DialogueStd.speak, self.speak)
-        self.assertEqual(self.DialogueStd.laugh, self.laugh)
-        self.assertEqual(self.DialogueStd.shout, self.shout)
-        self.assertNotEqual(self.DialogueStd.speak,self.shout)
+    def test_if_person_affected_on_Goto_and_GetFrom_are_Not_in_listMembers(self):
+        self.assertIsNone(self.Staging.GetAction().Speak(self.pP4, self.pP2).GetFrom())
+        self.assertEqual(f'[]',f'{self.Staging.GetAction().Speak(self.pP4, self.pP2).GetTo()}')
 
+    def test_person_affected_on_Goto_and_GetFrom_by_list_for_speaking_and_using_DialogueDefault(self):
+        self.assertEqual(f'{self.members}', f'{self.Staging.GetAction().Speak(self.pP1, self.members).GetTo()}')
+
+    """
+    def test_insert_two_person_to_use_speak_at_DialogueDefault(self):
+       self.assertEqual(self.nameP1, str(self.Staging.GetAction().Speak(self.nameP1, self.nameP2).GetFrom()))
+       #self.assertEqual("['" + self.nameP2 + "']", str(self.Staging.GetAction().Speak(self.nameP1, self.nameP2).GetTo()))
+
+    def test_person_speak_with_someone(self):
+        self.assertTrue(self.Staging.GetAction().Speak(self.nameP1,self.nameP2))
+        print(self.Staging.GetAction().Speak(self.nameP1,self.nameP2))
+        print(self.Staging.GetAction().GetMembers())
+
+    def test_insert_more_person_to_use_speak_at_DialologueDefault(self):
+        self.assertIs(self.Staging.GetAction().Speak(self.nameP1, self.members).GetTo(), self.members )
+        print(self.Staging.GetAction().Speak(self.nameP1, self.members).GetTo())
+
+    def tearDown(self):
+        self.Staging.GetAction().Speak(self.nameP1, []).GetTo()
+    """
 
 class Test_Staging(TestCase):
 
     def setUp(self):
-        self.speak = "Speak"
-        self.laugh = "Laugh"
-        self.shout = "Shout"
-        self.DialogueStd = DialogueStd(self.speak, self.laugh, self.shout)
-
-        self.caresser = "Caresser"
-        self.kiss = "Kiss"
-        self.enlacer = "Enlacer"
-
-        class GesteStd(Do):
-
-            def __init__(self, caresser, kiss, enlacer):
-                self.caresser = caresser
-                self.kiss = kiss
-                self.enlacer = enlacer
-
-        self.GesteStd = GesteStd(self.caresser, self.kiss, self.enlacer)
-
         self.nameP1 = "Constante"
         self.nameP2 = "PtitJean"
         self.nameP3 = "Gus"
         self.members = [self.nameP2, self.nameP3]
 
-        pP1 = PersonStd("Constante","Fleuriste")
-        pP2 = PersonStd("PtitJean","Etudiant",16)
-        self.community = {}
-        self.community[self.nameP1] = pP1
-        self.community[self.nameP2] = pP2
-
-        self.Staging = Staging( self.community,DialogueDefault)
+        self.pP1 = PersonStd("Constante","Fleuriste")
+        self.pP2 = PersonStd("PtitJean","Etudiant",16)
+        self.pP3 = PersonStd(self.nameP3,"Etudiant", 14)
+        self.community = {self.nameP1: self.pP1, self.nameP2: self.pP2, self.nameP3: self.pP3}
+        self.Staging = Staging( self.community,InteractDefault)
 
 
     def test_if_Staging_is_created(self):
         self.assertIsInstance(self.Staging, Staging)
+
+
 
     def test_of_GestionMembers_in_ActionClass(self):
         print(f"nbre members dans action : {len(self.Staging.GetPersons())}")
@@ -197,31 +207,17 @@ class Test_Staging(TestCase):
         print(f"nbre members dans action après inclusion: {len(self.Staging.GetPersons())}")
         self.Staging.ExcludePerson(self.nameP3)
 
-    """
-    def test_if_attr_of_Action_is_accessible(self):
-        self.assertEqual(self.Staging.GetAction().speak, self.speak)
-        self.assertEqual(self.Staging.GetAction().laugh, self.laugh)
-        self.assertEqual(self.Staging.GetAction().shout, self.shout)
-        self.Staging.SetAction(self.GesteStd)
-        self.assertNotEqual(self.Staging.GetAction().kiss, self.speak)
-        self.assertEqual(self.Staging.GetAction().kiss, self.kiss)
-        self.assertEqual(self.Staging.GetAction().enlacer, self.enlacer)
-        self.assertEqual(self.Staging.GetAction().caresser, self.caresser)
+    def test_of_two_persons_speak(self):
+        self.Staging.ToSTagePerson(self.nameP1)
+        self.Staging.ToSTagePerson(self.nameP2)
+        self.Staging.ToSTagePerson(self.nameP3)
+        self.Staging.GetAction().Speak(self.pP1, self.pP2)
+        print(self.Staging.GetAction().GetMembers()[self.nameP2])
+        self.assertEqual(self.Staging.GetAction().GetMembers()[self.nameP2].GetName(), "PtitJean") #TODO inseet profile
+        self.Staging.GetAction().Answer(self.pP1)
 
-    def test_simulation_of_code_to_action(self):
-        self.Staging.GetAction().SetTo(self.nameP1)
-        self.assertTrue(isinstance(self.Staging.GetAction().GetTo(), (list, dict, tuple)))
-        print(self.Staging.GetAction().GetTo())
-        
-       
-        self.assertEqual(self.Staging.GetAction().speak, self.speak)
-        self.Staging.GetAction().SetTo(self.members)
-        self.assertTrue(isinstance(self.Staging.GetAction().GetTo(), (list, dict, tuple)))
-        print(self.Staging.GetAction().GetTo())
-    """
 
-    def test_simulation_of_code_to_DialogueDefault(self):
-        print (self.Staging.GetAction().speak(self.nameP1, self.nameP2))
+
 
     def tearDown(self):
         print(f"nbre members dans action Actuellement : {len(self.Staging.GetPersons())}")

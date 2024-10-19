@@ -533,13 +533,6 @@ class Logger(object):
         return cls._value
 
 
-"""
-
-   def GetValue (self):
-      return self.__value
-"""
-
-
 class InjectionFonction:
 
     def __init__(self, fonctionInjected):
@@ -584,6 +577,8 @@ class Staging:  # Version python
             self.__Members = Members
 
         def Do(self): #Emplacement de dialogue staticSTD
+            self.__Do.SetMembers (self.__Members)
+            #print (self.__Members)
             return self.__Do
 
         def ChangeDoing(self, Do):
@@ -617,14 +612,19 @@ class Do:
 
     def __init__(self):
       self.__to = []
-      self.__from = []
+      self.__from = None
+      self.__result = True
 
-    def SetTo (self, namePerson):
-
-      if not isinstance(namePerson, (list, dict, tuple)):
-         self.__to.append(namePerson)
+    def SetTo (self, personObject:Person):
+      if not isinstance(personObject, (list, dict, tuple)):
+        if len(self.__to)>0:
+            for person in self.__to:
+                if person.GetName() == personObject.GetName():
+                    self.__result = False
+        if self.__result:
+            self.__to.append(personObject)
       else:
-         self.__to = namePerson
+       self.__to = personObject
 
       return self.__to
 
@@ -647,20 +647,35 @@ class DialogueStd(Do):
         self.shout = shout
 
 
-class DialogueDefault:
+class InteractDefault:
 
-    do = None
-
-    @staticmethod
-    def speak (exp, dest):
-        DialogueDefault.do = Do()
-        DialogueDefault.do.SetTo(exp)
-        DialogueDefault.do.SetFrom(dest)
-        return [f'{exp} , {dest} , {DialogueDefault.do.GetTo()},  {DialogueDefault.do.GetFrom()}']
+    do = Do()
+    members = None
 
     @staticmethod
-    def shout (exp, dest):
-        pass
+    def Speak (exp, dest):
+        if exp.GetName() in InteractDefault.members:
+            InteractDefault.do.SetTo(dest)
+            InteractDefault.do.SetFrom(exp)
+            destProfile = InteractDefault.do.GetTo()
+
+        return InteractDefault.do
+
+    @staticmethod
+    def Answer(exp):
+        if exp.GetName() == InteractDefault.do.GetFrom().GetName():
+            InteractDefault.Speak(InteractDefault.do.GetTo()[0], InteractDefault.do.GetFrom())
+
+
+    @staticmethod
+    def SetMembers (members):
+        InteractDefault.members = members
+        print(f"Ds dialogueDefault {InteractDefault.members}")
+
+    @staticmethod
+    def GetMembers ():
+        return InteractDefault.members
+
 
 
 class ProfileFactory:
