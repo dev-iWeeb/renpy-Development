@@ -154,23 +154,6 @@ class Test_Action_DialogueDefault(TestCase):
     def test_person_affected_on_Goto_and_GetFrom_by_list_for_speaking_and_using_DialogueDefault(self):
         self.assertEqual(f'{self.members}', f'{self.Staging.GetAction().Speak(self.pP1, self.members).GetTo()}')
 
-    """
-    def test_insert_two_person_to_use_speak_at_DialogueDefault(self):
-       self.assertEqual(self.nameP1, str(self.Staging.GetAction().Speak(self.nameP1, self.nameP2).GetFrom()))
-       #self.assertEqual("['" + self.nameP2 + "']", str(self.Staging.GetAction().Speak(self.nameP1, self.nameP2).GetTo()))
-
-    def test_person_speak_with_someone(self):
-        self.assertTrue(self.Staging.GetAction().Speak(self.nameP1,self.nameP2))
-        print(self.Staging.GetAction().Speak(self.nameP1,self.nameP2))
-        print(self.Staging.GetAction().GetMembers())
-
-    def test_insert_more_person_to_use_speak_at_DialologueDefault(self):
-        self.assertIs(self.Staging.GetAction().Speak(self.nameP1, self.members).GetTo(), self.members )
-        print(self.Staging.GetAction().Speak(self.nameP1, self.members).GetTo())
-
-    def tearDown(self):
-        self.Staging.GetAction().Speak(self.nameP1, []).GetTo()
-    """
 
 class Test_Staging(TestCase):
 
