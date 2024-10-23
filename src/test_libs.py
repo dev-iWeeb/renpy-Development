@@ -1,5 +1,4 @@
 import unittest
-import libs
 
 from unittest import TestCase
 from libs import Person, PersonFactory, PersonStd, Stats, PersonFactoryStd, Scene, Module, Do, DialogueStd, Staging, InteractDefault

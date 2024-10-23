@@ -676,8 +676,6 @@ class InteractDefault:
     def GetMembers ():
         return InteractDefault.members
 
-
-
 class ProfileFactory:
 
     Profiles ={}
