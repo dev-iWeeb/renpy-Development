@@ -65,7 +65,6 @@ class TestFactoryPerson (TestCase):
          self.assertGreater(self.pPerson.GetStats().GetLenStats(), 0)
 
 
-
 class TestFactoryPersonStd (TestCase):
 
     def setUp(self):
@@ -152,7 +151,7 @@ class Test_Action_DialogueDefault(TestCase):
         self.assertIsNone(self.Staging.GetAction().Speak(self.nameP4, self.nameP2).GetFrom())
         self.assertEqual(f'[]',f'{self.Staging.GetAction().Speak(self.nameP4, self.nameP2).GetTo()}')
 
-    def test_z_person_affected_on_Goto_and_GetFrom_by_list_for_speaking_and_using_DialogueDefault(self):
+    def test_c_person_affected_on_Goto_and_GetFrom_by_list_for_speaking_and_using_DialogueDefault(self):
         self.assertEqual(self.nameP1, str(self.Staging.GetAction().Speak(self.nameP1, self.members).GetFrom().GetName()))
         self.assertEqual(f'{self.pMembers}', f'{self.Staging.GetAction().Speak(self.nameP1, self.members).GetTo()}')
 
@@ -169,7 +168,6 @@ class Test_Staging(TestCase):
         self.pP3 = PersonStd(self.nameP3,"Etudiant", 14)
         self.community = {self.nameP1: self.pP1, self.nameP2: self.pP2, self.nameP3: self.pP3}
         self.Staging = Staging( self.community,InteractDefault)
-
 
     def test_if_Staging_is_created(self):
         self.assertIsInstance(self.Staging, Staging)
@@ -195,18 +193,16 @@ class Test_Staging(TestCase):
         self.Staging.ToSTagePerson(self.nameP3)
         self.Staging.GetAction().Speak(self.nameP1, self.nameP2)
         print(f'2 person speak test {self.Staging.GetAction().GetMembers()[self.nameP2]}')
-        self.assertEqual(self.Staging.GetAction().GetMembers()[self.nameP2].GetName(), "PtitJean") #TODO inseet profile
-        #self.Staging.GetAction().Answer(self.nameP1)
+        self.assertEqual(self.Staging.GetAction().GetMembers()[self.nameP2].GetName(), self.nameP2) #TODO inseet profile
+        responseCheck = self.Staging.GetAction().Answer(self.nameP1)
+        self.assertEqual(self.nameP2, responseCheck.GetFrom().GetName())
+        self.assertEqual(self.nameP1, responseCheck.GetTo()[0].GetName())
 
     def test_if_impression_profil_is_created_in_person_when_speaking(self):
         self.Staging.ToSTagePerson(self.nameP1)
         self.Staging.ToSTagePerson(self.nameP2)
         self.Staging.ToSTagePerson(self.nameP3)
         self.Staging.GetAction().Speak(self.nameP1, self.nameP2)
-
-
-
-
 
     def tearDown(self):
         print(f"nbre members dans action Actuellement : {len(self.Staging.GetPersons())}")
