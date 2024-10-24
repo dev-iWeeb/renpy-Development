@@ -1,7 +1,7 @@
 import unittest
 
 from unittest import TestCase
-from libs import Person, PersonFactory, PersonStd, Stats, PersonFactoryStd, Scene, Module, Do, DialogueStd, Staging, InteractDefault, ProfileFactory
+from libs import Person, PersonFactory, PersonStd, Stats, PersonFactoryStd, Scene, Module, Do, DialogueStd, Staging, InteractDefault
 
 
 class TestPerson(TestCase):
@@ -172,11 +172,11 @@ class Test_ProfileFactory(TestCase):
         self.pP3.SetProfile(self.profilpP3)
 
     def test_a_if_impressionProfil_is_created_on_Person(self):
-        self.pP2 = ProfileFactory.InsertImpression(self.pP2,self.pP1)
+        self.pP2 = PersonFactory.InsertProfileImpression(self.pP2,self.pP1)
         self.assertEqual(f'{self.profilpP1Fin}', f'{self.pP2.GetProfile()}')
 
     def test_b_if_profilPerson_is_created_on_impression(self):
-        self.pP3 =ProfileFactory.InsertImpression(self.pP3, self.pP2)
+        self.pP3 =PersonFactory.InsertProfileImpression(self.pP3, self.pP2)
         self.assertEqual( f'{self.profilpP3Fin}', f'{self.pP3.GetProfile()}')
 
     def test_c_if_profilPerson_must_be_updated(self):
@@ -234,7 +234,6 @@ class Test_Staging(TestCase):
         self.Staging.ToSTagePerson(self.nameP2)
         self.Staging.ToSTagePerson(self.nameP3)
         resultDiscuss = self.Staging.GetAction().Speak(self.nameP1, self.nameP2)
-        #print(f'CONTENU: {resultDiscuss} -- {resultDiscuss.GetTo()[0]}')
         self.assertEqual(f'{self.profilpP2Fin}',f'{resultDiscuss.GetTo()[0].GetProfile()}')
 
     def tearDown(self):

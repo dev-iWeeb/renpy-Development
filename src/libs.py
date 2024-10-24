@@ -134,6 +134,32 @@ class PersonFactory:
 
         return ObjetPerson
 
+    @staticmethod
+    def InsertProfileImpression(ObjetPersonDest: Person, ObjetPersonExp: Person, configProfil={}):
+        profil = dict()
+        key_impressions = "impressions"
+        profil[key_impressions] = dict()
+        profil[key_impressions][ObjetPersonExp.GetName()] = configProfil
+
+        if not key_impressions in ObjetPersonDest.GetProfile():
+            ObjetPersonDest.SetProfile(profil)
+        else:
+            if not ObjetPersonExp.GetName() in ObjetPersonDest.GetProfile()[key_impressions]:
+                newAddPersonProfil = ObjetPersonDest.GetProfile()
+                newAddPersonProfil[key_impressions][ObjetPersonExp.GetName()] = configProfil
+                ObjetPersonDest.SetProfile(newAddPersonProfil)
+            else:
+                # TODO Repasser pour une évolution  (maj des statistiques)
+                pass
+
+        return ObjetPersonDest
+
+    @staticmethod
+    def InsertSecret(ObjetPersonDest: Person, secret):
+        profil = {}
+        profil["secrets"] = []
+        profil["secrets"].append(secret)
+
 
 class PersonFactoryStd:
 
@@ -143,6 +169,10 @@ class PersonFactoryStd:
         Pfactory = PersonFactory.create(name, occupation, age, personstats, profile, surname, ageDefault, legalAge)
         return PersonStd(Pfactory.GetName(), Pfactory.GetOccupation(), Pfactory.GetOlder(), Pfactory.GetStats(),
                          Pfactory.GetProfile(), Pfactory.GetSurname(), bodycount)
+
+    @staticmethod
+    def InsertProfileImpressionStd(ObjetPersonDest: Person, ObjetPersonExp: Person, configProfil={}):
+        return PersonFactory.InsertProfileImpression(ObjetPersonDest, ObjetPersonExp, configProfil)
 
 
 class Scene:
@@ -657,7 +687,7 @@ class InteractDefault:
                 InteractDefault.valid = False
             if InteractDefault.valid:
                 majProfilPerson = InteractDefault.members[dest]
-                majProfilPerson = ProfileFactory.InsertImpression(majProfilPerson, InteractDefault.members[exp])
+                majProfilPerson = PersonFactory.InsertProfileImpression(majProfilPerson, InteractDefault.members[exp])
                 InteractDefault.do.SetTo(majProfilPerson)
         else:
             for person in dest:
@@ -692,37 +722,6 @@ class InteractDefault:
     @staticmethod
     def GetMembers ():
         return InteractDefault.members
-
-
-class ProfileFactory:
-
-    Profiles ={}
-
-    @staticmethod
-    def InsertImpression (ObjetPersonDest: Person, ObjetPersonExp: Person, configProfil = {}):
-        profil = dict()
-        key_impressions = "impressions"
-        profil[key_impressions] = dict()
-        profil[key_impressions][ObjetPersonExp.GetName()] = configProfil
-
-        if not key_impressions in ObjetPersonDest.GetProfile():
-            ObjetPersonDest.SetProfile(profil)
-        else:
-            if not ObjetPersonExp.GetName() in ObjetPersonDest.GetProfile()[key_impressions]:
-                newAddPersonProfil = ObjetPersonDest.GetProfile()
-                newAddPersonProfil[key_impressions][ObjetPersonExp.GetName()]= configProfil
-                ObjetPersonDest.SetProfile(newAddPersonProfil)
-            else:
-                #TODO Repasser pour une évolution  (maj des statistiques)
-               pass
-
-        return  ObjetPersonDest
-
-    @staticmethod
-    def InsertSecret(ObjetPersonDest: Person, secret):
-        profil ={}
-        profil["secrets"]=[]
-        profil["secrets"].append(secret)
 
 
 
