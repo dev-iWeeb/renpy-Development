@@ -161,14 +161,24 @@ class Test_ProfileFactory(TestCase):
     def setUp(self):
         self.nameP1 = "PtitJean"
         self.nameP2 = "Constante"
+        self.nameP3 = "Gus"
         self.key_impressions = "impressions"
         self.pP1 = PersonStd(self.nameP1, "Fleuriste")
         self.pP2 = PersonStd(self.nameP2, "Etudiant", 16)
-        self.profilpP1 = { self.key_impressions: {self.nameP1:{}}}
+        self.pP3 = PersonStd(self.nameP3 ,"Journaliste")
+        self.profilpP1Fin = { self.key_impressions: {self.nameP1:{}}}
+        self.profilpP3 = { self.key_impressions: {}}
+        self.profilpP3Fin ={ self.key_impressions: {self.nameP2:{}}}
+        self.pP3.SetProfile(self.profilpP3)
 
     def test_a_if_impressionProfil_is_created_on_Person(self):
         self.pP2 = ProfileFactory.InsertImpression(self.pP2,self.pP1)
-        self.assertEqual(f'{self.pP2.GetProfile()}', f'{self.profilpP1}')
+        self.assertEqual(f'{self.profilpP1Fin}', f'{self.pP2.GetProfile()}')
+
+    def test_b_if_profilPerson_is_created_on_impression(self):
+        self.pP3 =ProfileFactory.InsertImpression(self.pP3, self.pP2)
+        self.assertEqual( f'{self.profilpP3Fin}', f'{self.pP3.GetProfile()}')
+
 
 
 class Test_Staging(TestCase):

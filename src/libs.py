@@ -705,7 +705,7 @@ class ProfileFactory:
             ObjetPersonDest.SetProfile(profil)
         else:
             if not ObjetPersonExp.GetName() in ObjetPersonDest.GetProfile()[key_impressions]:
-                newAddPersonProfil = ObjetPersonDest.GetProfile()[key_impressions]
+                newAddPersonProfil = ObjetPersonDest.GetProfile()
                 newAddPersonProfil[key_impressions][ObjetPersonExp.GetName()]= configProfil
                 ObjetPersonDest.SetProfile(newAddPersonProfil)
             else:
