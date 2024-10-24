@@ -626,6 +626,9 @@ class Do:
     def GetFrom(self):
        return  self.__from
 
+    def __str__(self):
+        return f'GetFrom : {self.GetFrom()} - GetTo : {self.GetTo()}'
+
 
 class DialogueStd(Do):
 
@@ -653,7 +656,9 @@ class InteractDefault:
             if not dest in InteractDefault.members:
                 InteractDefault.valid = False
             if InteractDefault.valid:
-                InteractDefault.do.SetTo(InteractDefault.members[dest])
+                majProfilPerson = InteractDefault.members[dest]
+                majProfilPerson = ProfileFactory.InsertImpression(majProfilPerson, InteractDefault.members[exp])
+                InteractDefault.do.SetTo(majProfilPerson)
         else:
             for person in dest:
                 if not person in InteractDefault.members:
@@ -664,7 +669,6 @@ class InteractDefault:
 
         if InteractDefault.valid:
             InteractDefault.do.SetFrom(InteractDefault.members[exp])
-            destProfile = InteractDefault.do.GetTo()
 
         return InteractDefault.do
 

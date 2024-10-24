@@ -191,10 +191,12 @@ class Test_Staging(TestCase):
         self.nameP1 = "Constante"
         self.nameP2 = "PtitJean"
         self.nameP3 = "Gus"
+        self.key_impressions = "impressions"
         self.members = [self.nameP2, self.nameP3]
         self.pP1 = PersonStd("Constante","Fleuriste")
         self.pP2 = PersonStd("PtitJean","Etudiant",16)
         self.pP3 = PersonStd(self.nameP3,"Etudiant", 14)
+        self.profilpP2Fin = {self.key_impressions: {self.nameP1: {}}}
         self.community = {self.nameP1: self.pP1, self.nameP2: self.pP2, self.nameP3: self.pP3}
         self.Staging = Staging( self.community,InteractDefault)
 
@@ -231,7 +233,9 @@ class Test_Staging(TestCase):
         self.Staging.ToSTagePerson(self.nameP1)
         self.Staging.ToSTagePerson(self.nameP2)
         self.Staging.ToSTagePerson(self.nameP3)
-        self.Staging.GetAction().Speak(self.nameP1, self.nameP2)
+        resultDiscuss = self.Staging.GetAction().Speak(self.nameP1, self.nameP2)
+        #print(f'CONTENU: {resultDiscuss} -- {resultDiscuss.GetTo()[0]}')
+        self.assertEqual(f'{self.profilpP2Fin}',f'{resultDiscuss.GetTo()[0].GetProfile()}')
 
     def tearDown(self):
         print(f"nbre members dans action Actuellement : {len(self.Staging.GetPersons())}")
