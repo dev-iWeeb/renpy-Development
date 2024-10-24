@@ -609,23 +609,12 @@ class Staging:  # Version python
 
 class Do:
 
-
     def __init__(self):
       self.__to = []
       self.__from = None
-      self.__result = True
 
-    def SetTo (self, personObject:Person):
-      if not isinstance(personObject, (list, dict, tuple)):
-        if len(self.__to)>0:
-            for person in self.__to:
-                if person.GetName() == personObject.GetName():
-                    self.__result = False
-        if self.__result:
-            self.__to.append(personObject)
-      else:
-       self.__to = personObject
-
+    def SetTo (self, person):
+      self.__to.append(person)
       return self.__to
 
     def SetFrom (self, namePerson):
@@ -649,22 +638,45 @@ class DialogueStd(Do):
 
 class InteractDefault:
 
-    do = Do()
+    do = None
     members = None
+    valid = None
 
     @staticmethod
     def Speak (exp, dest):
-        if exp.GetName() in InteractDefault.members:
-            InteractDefault.do.SetTo(dest)
-            InteractDefault.do.SetFrom(exp)
+        InteractDefault.do = Do()
+        InteractDefault.valid = True
+        if not exp in InteractDefault.members:
+            InteractDefault.valid = False
+
+        if not isinstance(dest, (list, dict, tuple)):
+            if not dest in InteractDefault.members:
+                InteractDefault.valid = False
+            if InteractDefault.valid:
+                InteractDefault.do.SetTo(InteractDefault.members[dest])
+        else:
+            for person in dest:
+                if not person in InteractDefault.members:
+                    InteractDefault.result = False #TODO pour l'instant, on rejette tout l'ensemble si un élèment n'est pas dans la liste
+            if InteractDefault.valid:
+                for person in dest:
+                    InteractDefault.do.SetTo(InteractDefault.members[person])
+
+        if InteractDefault.valid:
+            InteractDefault.do.SetFrom(InteractDefault.members[exp])
             destProfile = InteractDefault.do.GetTo()
 
         return InteractDefault.do
 
+
     @staticmethod
     def Answer(exp):
-        if exp.GetName() == InteractDefault.do.GetFrom().GetName():
-            InteractDefault.Speak(InteractDefault.do.GetTo()[0], InteractDefault.do.GetFrom())
+        result = []
+        if exp == InteractDefault.do.GetFrom().GetName():
+            print(f'Response {InteractDefault.do.GetTo()}')
+            result = InteractDefault.Speak(InteractDefault.do.GetTo()[0], InteractDefault.do.GetFrom())
+
+        return result
 
 
     @staticmethod

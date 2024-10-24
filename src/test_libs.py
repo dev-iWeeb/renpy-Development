@@ -130,28 +130,31 @@ class Test_Action_DialogueDefault(TestCase):
         self.nameP2 = "PtitJean"
         self.nameP3 = "Gus"
         self.nameP4 = "PtitVier"
-        # self.members = [self.nameP2, self.nameP3]
+        self.members = [self.nameP2, self.nameP3]
         self.pP1 = PersonStd( self.nameP1 , "Fleuriste")
         self.pP2 = PersonStd( self.nameP2, "Etudiant", 16)
         self.pP3 = PersonStd(self.nameP3, "Etudiant", 14)
         self.pP4 = PersonStd(self.nameP4,"Jardinier")
-        self.members = [self.pP2, self.pP3]
+        self.pMembers = [self.pP2, self.pP3]
         self.community = {self.nameP1: self.pP1, self.nameP2: self.pP2 , self.nameP3: self.pP3}
         self.Staging = Staging(self.community, InteractDefault)
         self.Staging.ToSTagePerson(self.nameP1)
         self.Staging.ToSTagePerson(self.nameP2)
         self.Staging.ToSTagePerson(self.nameP3)
+        print("réinit")
 
-    def test_person_affected_to_Goto_and_GetFrom_for_speaking_and_using_DialogueDefault(self):
-        self.assertEqual(self.nameP1, str(self.Staging.GetAction().Speak(self.pP1, self.pP2).GetFrom().GetName()))
-        self.assertEqual(self.nameP2,str(self.Staging.GetAction().Speak(self.pP1, self.pP2).GetTo()[0].GetName()))
+    def test_a_person_affected_to_Goto_and_GetFrom_for_speaking_and_using_DialogueDefault(self):
+        print(f'GetFrom.GetName : {self.Staging.GetAction().Speak(self.nameP1, self.nameP2).GetFrom()}')
+        self.assertEqual(self.nameP1, str(self.Staging.GetAction().Speak(self.nameP1, self.nameP2).GetFrom().GetName()))
+        self.assertEqual(self.nameP2,str(self.Staging.GetAction().Speak(self.nameP1, self.nameP2).GetTo()[0].GetName()))
 
-    def test_if_person_affected_on_Goto_and_GetFrom_are_Not_in_listMembers(self):
-        self.assertIsNone(self.Staging.GetAction().Speak(self.pP4, self.pP2).GetFrom())
-        self.assertEqual(f'[]',f'{self.Staging.GetAction().Speak(self.pP4, self.pP2).GetTo()}')
+    def test_b_if_person_affected_on_Goto_and_GetFrom_are_Not_in_listMembers(self):
+        self.assertIsNone(self.Staging.GetAction().Speak(self.nameP4, self.nameP2).GetFrom())
+        self.assertEqual(f'[]',f'{self.Staging.GetAction().Speak(self.nameP4, self.nameP2).GetTo()}')
 
-    def test_person_affected_on_Goto_and_GetFrom_by_list_for_speaking_and_using_DialogueDefault(self):
-        self.assertEqual(f'{self.members}', f'{self.Staging.GetAction().Speak(self.pP1, self.members).GetTo()}')
+    def test_z_person_affected_on_Goto_and_GetFrom_by_list_for_speaking_and_using_DialogueDefault(self):
+        self.assertEqual(self.nameP1, str(self.Staging.GetAction().Speak(self.nameP1, self.members).GetFrom().GetName()))
+        self.assertEqual(f'{self.pMembers}', f'{self.Staging.GetAction().Speak(self.nameP1, self.members).GetTo()}')
 
 
 class Test_Staging(TestCase):
@@ -161,7 +164,6 @@ class Test_Staging(TestCase):
         self.nameP2 = "PtitJean"
         self.nameP3 = "Gus"
         self.members = [self.nameP2, self.nameP3]
-
         self.pP1 = PersonStd("Constante","Fleuriste")
         self.pP2 = PersonStd("PtitJean","Etudiant",16)
         self.pP3 = PersonStd(self.nameP3,"Etudiant", 14)
@@ -171,8 +173,6 @@ class Test_Staging(TestCase):
 
     def test_if_Staging_is_created(self):
         self.assertIsInstance(self.Staging, Staging)
-
-
 
     def test_of_GestionMembers_in_ActionClass(self):
         print(f"nbre members dans action : {len(self.Staging.GetPersons())}")
@@ -193,10 +193,17 @@ class Test_Staging(TestCase):
         self.Staging.ToSTagePerson(self.nameP1)
         self.Staging.ToSTagePerson(self.nameP2)
         self.Staging.ToSTagePerson(self.nameP3)
-        self.Staging.GetAction().Speak(self.pP1, self.pP2)
-        print(self.Staging.GetAction().GetMembers()[self.nameP2])
+        self.Staging.GetAction().Speak(self.nameP1, self.nameP2)
+        print(f'2 person speak test {self.Staging.GetAction().GetMembers()[self.nameP2]}')
         self.assertEqual(self.Staging.GetAction().GetMembers()[self.nameP2].GetName(), "PtitJean") #TODO inseet profile
-        self.Staging.GetAction().Answer(self.pP1)
+        #self.Staging.GetAction().Answer(self.nameP1)
+
+    def test_if_impression_profil_is_created_in_person_when_speaking(self):
+        self.Staging.ToSTagePerson(self.nameP1)
+        self.Staging.ToSTagePerson(self.nameP2)
+        self.Staging.ToSTagePerson(self.nameP3)
+        self.Staging.GetAction().Speak(self.nameP1, self.nameP2)
+
 
 
 
