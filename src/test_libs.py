@@ -179,6 +179,10 @@ class Test_ProfileFactory(TestCase):
         self.pP3 =ProfileFactory.InsertImpression(self.pP3, self.pP2)
         self.assertEqual( f'{self.profilpP3Fin}', f'{self.pP3.GetProfile()}')
 
+    def test_c_if_profilPerson_must_be_updated(self):
+        pP4 = self.pP3
+        pP4.SetProfile(self.profilpP1Fin)
+        self.assertEqual(f'{self.profilpP1Fin}', f'{pP4.GetProfile()}')
 
 
 class Test_Staging(TestCase):
