@@ -1,7 +1,7 @@
 import unittest
 
 from unittest import TestCase
-from libs import Person, PersonFactory, PersonStd, Stats, PersonFactoryStd, Scene, Module, Do, DialogueStd, Staging, InteractDefault
+from libs import Person, PersonFactory, PersonStd, Stats, PersonFactoryStd, Scene, Module, Do, DialogueStd, Staging, InteractDefault, ProfileFactory
 
 
 class TestPerson(TestCase):
@@ -154,6 +154,21 @@ class Test_Action_DialogueDefault(TestCase):
     def test_c_person_affected_on_Goto_and_GetFrom_by_list_for_speaking_and_using_DialogueDefault(self):
         self.assertEqual(self.nameP1, str(self.Staging.GetAction().Speak(self.nameP1, self.members).GetFrom().GetName()))
         self.assertEqual(f'{self.pMembers}', f'{self.Staging.GetAction().Speak(self.nameP1, self.members).GetTo()}')
+
+
+class Test_ProfileFactory(TestCase):
+
+    def setUp(self):
+        self.nameP1 = "PtitJean"
+        self.nameP2 = "Constante"
+        self.key_impressions = "impressions"
+        self.pP1 = PersonStd(self.nameP1, "Fleuriste")
+        self.pP2 = PersonStd(self.nameP2, "Etudiant", 16)
+        self.profilpP1 = { self.key_impressions: {self.nameP1:{}}}
+
+    def test_a_if_impressionProfil_is_created_on_Person(self):
+        self.pP2 = ProfileFactory.InsertImpression(self.pP2,self.pP1)
+        self.assertEqual(f'{self.pP2.GetProfile()}', f'{self.profilpP1}')
 
 
 class Test_Staging(TestCase):

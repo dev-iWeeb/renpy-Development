@@ -42,7 +42,7 @@ class Stats:
 
 class Person:
 
-    def __init__(self, name, occupation, age=CONST_DEFAULT_AGE, Stats={}, Profile=[], surname="",
+    def __init__(self, name, occupation, age=CONST_DEFAULT_AGE, Stats={}, Profile={}, surname="",
                  ageDefault=CONST_DEFAULT_AGE, legalAge=CONST_DEFAULT_LEGAL_AGE):
         self.__name = name
         self.__ageDefault = ageDefault
@@ -95,7 +95,7 @@ class Person:
 
 class PersonStd(Person):
 
-    def __init__(self, name, occupation, age=CONST_DEFAULT_AGE, Stats={}, Profile=[], surname="",
+    def __init__(self, name, occupation, age=CONST_DEFAULT_AGE, Stats={}, Profile={}, surname="",
                  bodycount=CONST_DEFAULT_BODYCOUNT, ageDefault=CONST_DEFAULT_AGE, legalAge=CONST_DEFAULT_LEGAL_AGE):
         super().__init__(name, occupation, age, Stats, Profile, surname, ageDefault, legalAge)
         self.SetBodyCount(bodycount)
@@ -113,7 +113,7 @@ class PersonStd(Person):
 class PersonFactory:
 
     @staticmethod
-    def create(name, occupation, age=CONST_DEFAULT_AGE, personstats=CONFIG_STATISTIC, Profile=[], surname="",
+    def create(name, occupation, age=CONST_DEFAULT_AGE, personstats=CONFIG_STATISTIC, Profile={}, surname="",
                ageDefault=CONST_DEFAULT_AGE, legalAge=CONST_DEFAULT_LEGAL_AGE):
         StatsData = PersonFactory.CreateStats(personstats)
         return Person(name, occupation, age, StatsData, Profile, surname, ageDefault, legalAge)
@@ -138,7 +138,7 @@ class PersonFactory:
 class PersonFactoryStd:
 
     @staticmethod
-    def create(name, occupation, age=CONST_DEFAULT_AGE, personstats=CONFIG_STATISTIC, profile=[], surname="",
+    def create(name, occupation, age=CONST_DEFAULT_AGE, personstats=CONFIG_STATISTIC, profile={}, surname="",
                bodycount=CONST_DEFAULT_BODYCOUNT, ageDefault=CONST_DEFAULT_AGE, legalAge=CONST_DEFAULT_LEGAL_AGE):
         Pfactory = PersonFactory.create(name, occupation, age, personstats, profile, surname, ageDefault, legalAge)
         return PersonStd(Pfactory.GetName(), Pfactory.GetOccupation(), Pfactory.GetOlder(), Pfactory.GetStats(),
@@ -695,12 +695,24 @@ class ProfileFactory:
     Profiles ={}
 
     @staticmethod
-    def InsertImpression (ObjetPersonExp: Person, ObjetPersonDest: Person, configProfil = {}):
+    def InsertImpression (ObjetPersonDest: Person, ObjetPersonExp: Person, configProfil = {}):
         profil = dict()
-        profil["impressions"]= dict()
-        profil["impressions"][ObjetPersonDest.GetName()]= configProfil
-        ObjetPersonExp.SetProfile(profil)
-        return  ObjetPersonExp
+        key_impressions = "impressions"
+        profil[key_impressions] = dict()
+        profil[key_impressions][ObjetPersonExp.GetName()] = configProfil
+
+        if not key_impressions in ObjetPersonDest.GetProfile():
+            ObjetPersonDest.SetProfile(profil)
+        else:
+            if not ObjetPersonExp.GetName() in ObjetPersonDest.GetProfile()[key_impressions]:
+                newAddPersonProfil = ObjetPersonDest.GetProfile()[key_impressions]
+                newAddPersonProfil[key_impressions][ObjetPersonExp.GetName()]= configProfil
+                ObjetPersonDest.SetProfile(newAddPersonProfil)
+            else:
+                #TODO Repasser pour une évolution  (maj des statistiques)
+               pass
+
+        return  ObjetPersonDest
 
     @staticmethod
     def InsertSecret(ObjetPersonDest: Person, secret):
