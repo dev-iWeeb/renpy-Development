@@ -660,15 +660,6 @@ class Do:
         return f'GetFrom : {self.GetFrom()} - GetTo : {self.GetTo()}'
 
 
-class DialogueStd(Do):
-
-    def __init__(self, speak, laugh, shout):
-        super().__init__()
-        self.speak = speak
-        self.laugh = laugh
-        self.shout = shout
-
-
 class InteractDefault:
 
     do = None

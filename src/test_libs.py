@@ -1,7 +1,7 @@
 import unittest
 
 from unittest import TestCase
-from libs import Person, PersonFactory, PersonStd, Stats, PersonFactoryStd, Scene, Module, Do, DialogueStd, Staging, InteractDefault
+from libs import Person, PersonFactory, PersonStd, Stats, PersonFactoryStd, Scene, Module, Do, Staging, InteractDefault
 
 
 class TestPerson(TestCase):
