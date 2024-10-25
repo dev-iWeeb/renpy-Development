@@ -242,6 +242,23 @@ class Test_Staging(TestCase):
         resultDiscuss = self.Staging.GetAction().Speak(self.nameP1, self.nameP2)
         self.assertEqual(f'{self.profilpP2Fin}',f'{resultDiscuss.GetTo()[0].GetProfile()}')
 
+    def test_e_if_speaker_interact_with_allbody(self):
+        self.Staging.ToSTagePerson(self.nameP1)
+        self.Staging.ToSTagePerson(self.nameP2)
+        self.Staging.ToSTagePerson(self.nameP3)
+        self.nameP5 ="Caroline"
+        self.pP5 = PersonFactoryStd.create(self.nameP5, "Teacher")
+        self.community[self.nameP5]= self.pP5
+        self.Staging.ToSTagePerson(self.nameP5)
+        self.key_impressions = "impressions"
+        self.profilpFin = {self.key_impressions: {self.nameP1: {}}}
+        self.Staging.GetAction().Speak(self.nameP1, self.nameP2)
+        profileP5 = self.Staging.GetPersons()[self.nameP5].GetProfile()
+        profileP3 = self.Staging.GetPersons()[self.nameP3].GetProfile()
+        self.assertEqual(f'{self.profilpFin}', f'{profileP5}')
+        self.assertEqual(f'{self.profilpFin}', f'{profileP3}')
+
+
     def tearDown(self):
         print(f"nbre members dans action Actuellement : {len(self.Staging.GetPersons())}")
 

@@ -692,12 +692,11 @@ class InteractDefault:
         if not isinstance(dest, (list, dict, tuple)):
             if not dest in InteractDefault.members:
                 InteractDefault.valid = False
-
             dest = [dest]
         else:
             for person in dest:
                 if not person in InteractDefault.members:
-                    InteractDefault.result = False  # TODO pour l'instant, on rejette tout l'ensemble si un élèment n'est pas dans la liste
+                    InteractDefault.result = False  #TODO pour l'instant, on rejette tout l'ensemble si un élèment n'est pas dans la liste
 
         if InteractDefault.valid:
             expPerson = InteractDefault.members[exp]
@@ -706,6 +705,12 @@ class InteractDefault:
                 majProfilPerson = InteractDefault.members[person]
                 majProfilPerson = PersonFactory.InsertProfileImpression(majProfilPerson, expPerson)
                 InteractDefault.do.SetTo(majProfilPerson)
+
+            for personKey in InteractDefault.members.keys():
+                if not exp == personKey or not dest[0] == personKey:
+                    majProfilPerson = InteractDefault.members[personKey]
+                    majProfilPerson = PersonFactory.InsertProfileImpression(majProfilPerson, expPerson)
+                    InteractDefault.members[personKey] = majProfilPerson
 
         return InteractDefault.do
 
