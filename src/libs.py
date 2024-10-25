@@ -679,30 +679,28 @@ class InteractDefault:
     def Speak (exp, dest):
         InteractDefault.do = Do()
         InteractDefault.valid = True
+
         if not exp in InteractDefault.members:
             InteractDefault.valid = False
 
         if not isinstance(dest, (list, dict, tuple)):
             if not dest in InteractDefault.members:
                 InteractDefault.valid = False
-            if InteractDefault.valid:
-                expPerson = InteractDefault.members[exp]
-                InteractDefault.do.SetFrom(expPerson)
-                majProfilPerson = InteractDefault.members[dest]
-                majProfilPerson = PersonFactory.InsertProfileImpression(majProfilPerson, expPerson)
-                InteractDefault.do.SetTo(majProfilPerson)
+
+            dest = [dest]
         else:
             for person in dest:
                 if not person in InteractDefault.members:
-                    InteractDefault.result = False #TODO pour l'instant, on rejette tout l'ensemble si un élèment n'est pas dans la liste
-            if InteractDefault.valid:
-                expPerson = InteractDefault.members[exp]
-                InteractDefault.do.SetFrom(expPerson)
-                for person in dest:
-                    majProfilPerson = InteractDefault.members[person]
-                    majProfilPerson = PersonFactory.InsertProfileImpression(majProfilPerson, expPerson)
-                    InteractDefault.do.SetTo(majProfilPerson)
-                #TODO Refactor cette partie de code.. il y a surement mieux..
+                    InteractDefault.result = False  # TODO pour l'instant, on rejette tout l'ensemble si un élèment n'est pas dans la liste
+
+        if InteractDefault.valid:
+            expPerson = InteractDefault.members[exp]
+            InteractDefault.do.SetFrom(expPerson)
+            for person in dest:
+                majProfilPerson = InteractDefault.members[person]
+                majProfilPerson = PersonFactory.InsertProfileImpression(majProfilPerson, expPerson)
+                InteractDefault.do.SetTo(majProfilPerson)
+
         return InteractDefault.do
 
 
