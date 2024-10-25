@@ -155,8 +155,10 @@ class Test_Action_InteractDefault(TestCase):
         self.assertEqual(self.nameP1, str(self.Staging.GetAction().Speak(self.nameP1, self.members).GetFrom().GetName()))
         self.assertEqual(f'{self.pMembers}', f'{self.Staging.GetAction().Speak(self.nameP1, self.members).GetTo()}')
 
-    def test_d_if_person_answer_without_speaking_before(self):
-        self.Staging.GetAction().Answer(self.nameP1)
+    def test_d_if_person_answer_with_and_without_speaking_before(self):
+        responseCheck = self.Staging.GetAction().Answer(self.nameP1)
+        self.assertEqual(self.nameP2, responseCheck.GetFrom().GetName())
+        self.assertEqual(self.nameP1, responseCheck.GetTo()[0].GetName())
         self.assertEqual("[]", f'{self.Staging.GetAction().Answer(self.nameP1)}')
 
 
