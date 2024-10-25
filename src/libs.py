@@ -677,6 +677,20 @@ class InteractDefault:
 
     @staticmethod
     def Speak (exp, dest):
+      return InteractDefault.Core(exp, dest)
+
+    @staticmethod
+    def Answer(exp):
+        result = []
+        if not InteractDefault.valid == None and not InteractDefault.do == None and len(InteractDefault.members)>0:
+            if exp == InteractDefault.do.GetFrom().GetName():
+                newExp = InteractDefault.do.GetTo()[0].GetName()
+                result = InteractDefault.Core(newExp, exp)
+                #TODO à défaut, on définira la première personne de la liste comme personne principal
+        return result
+
+    @staticmethod
+    def Core(exp, dest):
         InteractDefault.do = Do()
         InteractDefault.valid = True
 
@@ -702,18 +716,6 @@ class InteractDefault:
                 InteractDefault.do.SetTo(majProfilPerson)
 
         return InteractDefault.do
-
-
-    @staticmethod
-    def Answer(exp):
-        result = []
-        if not InteractDefault.valid == None and not InteractDefault.do == None and len(InteractDefault.members)>0:
-            if exp == InteractDefault.do.GetFrom().GetName():
-                newExp = InteractDefault.do.GetTo()[0].GetName()
-                result = InteractDefault.Speak(newExp, exp)
-                #TODO à défaut, on définira la première personne de la liste comme personne principal
-        return result
-
 
     @staticmethod
     def SetMembers (members):
