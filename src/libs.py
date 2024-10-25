@@ -686,20 +686,23 @@ class InteractDefault:
             if not dest in InteractDefault.members:
                 InteractDefault.valid = False
             if InteractDefault.valid:
+                expPerson = InteractDefault.members[exp]
+                InteractDefault.do.SetFrom(expPerson)
                 majProfilPerson = InteractDefault.members[dest]
-                majProfilPerson = PersonFactory.InsertProfileImpression(majProfilPerson, InteractDefault.members[exp])
+                majProfilPerson = PersonFactory.InsertProfileImpression(majProfilPerson, expPerson)
                 InteractDefault.do.SetTo(majProfilPerson)
         else:
             for person in dest:
                 if not person in InteractDefault.members:
                     InteractDefault.result = False #TODO pour l'instant, on rejette tout l'ensemble si un élèment n'est pas dans la liste
             if InteractDefault.valid:
+                expPerson = InteractDefault.members[exp]
+                InteractDefault.do.SetFrom(expPerson)
                 for person in dest:
-                    InteractDefault.do.SetTo(InteractDefault.members[person])
-
-        if InteractDefault.valid:
-            InteractDefault.do.SetFrom(InteractDefault.members[exp])
-
+                    majProfilPerson = InteractDefault.members[person]
+                    majProfilPerson = PersonFactory.InsertProfileImpression(majProfilPerson, expPerson)
+                    InteractDefault.do.SetTo(majProfilPerson)
+                #TODO Refactor cette partie de code.. il y a surement mieux..
         return InteractDefault.do
 
 

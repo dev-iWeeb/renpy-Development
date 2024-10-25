@@ -156,7 +156,7 @@ class Test_Action_DialogueDefault(TestCase):
         self.assertEqual(f'{self.pMembers}', f'{self.Staging.GetAction().Speak(self.nameP1, self.members).GetTo()}')
 
 
-class Test_ProfileFactory(TestCase):
+class Test_PersonProfileFactory(TestCase):
 
     def setUp(self):
         self.nameP1 = "PtitJean"
