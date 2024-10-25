@@ -677,6 +677,7 @@ class InteractDefault:
             if exp == InteractDefault.do.GetFrom().GetName():
                 newExp = InteractDefault.do.GetTo()[0].GetName()
                 result = InteractDefault.Core(newExp, exp)
+                InteractDefault.valid = None
                 #TODO à défaut, on définira la première personne de la liste comme personne principal
         return result
 

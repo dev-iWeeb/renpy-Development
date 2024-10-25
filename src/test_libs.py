@@ -122,7 +122,7 @@ class TestScene (TestCase):
         self.assertGreaterEqual(self.tScene.GetStage(), 0)
 
 
-class Test_Action_DialogueDefault(TestCase):
+class Test_Action_InteractDefault(TestCase):
 
     def setUp(self):
         self.nameP1 = "Constante"
@@ -154,6 +154,10 @@ class Test_Action_DialogueDefault(TestCase):
     def test_c_person_affected_on_Goto_and_GetFrom_by_list_for_speaking_and_using_DialogueDefault(self):
         self.assertEqual(self.nameP1, str(self.Staging.GetAction().Speak(self.nameP1, self.members).GetFrom().GetName()))
         self.assertEqual(f'{self.pMembers}', f'{self.Staging.GetAction().Speak(self.nameP1, self.members).GetTo()}')
+
+    def test_d_if_person_answer_without_speaking_before(self):
+        self.Staging.GetAction().Answer(self.nameP1)
+        self.assertEqual("[]", f'{self.Staging.GetAction().Answer(self.nameP1)}')
 
 
 class Test_PersonProfileFactory(TestCase):
