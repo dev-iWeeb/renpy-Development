@@ -6,6 +6,7 @@ CONST_DEFAULT_INIT_STAGE = 0
 CONST_START_CYCLE_AT = 1
 CONST_DEFAULT_BODYCOUNT = 0
 CONST_SYST_MODULE_ENABLE = True
+CONST_SYNCHRO_PROFILE_ALLBODY = True #TODO réaranger ce mode peut être trop général..
 
 CONFIG_STATISTIC = ["Affinity", "Colère", "Santé", "Assurance"]
 
@@ -668,7 +669,7 @@ class InteractDefault:
 
     @staticmethod
     def Speak (exp, dest):
-      return InteractDefault.Core(exp, dest)
+      return InteractDefault.Core(exp, dest, True)
 
     @staticmethod
     def Answer(exp):
@@ -682,7 +683,7 @@ class InteractDefault:
         return result
 
     @staticmethod
-    def Core(exp, dest):
+    def Core(exp, dest, option=CONST_SYNCHRO_PROFILE_ALLBODY):
         InteractDefault.do = Do()
         InteractDefault.valid = True
 
@@ -701,10 +702,12 @@ class InteractDefault:
         if InteractDefault.valid:
             expPerson = InteractDefault.members[exp]
             InteractDefault.do.SetFrom(expPerson)
-            for person in dest:
-                majProfilPerson = InteractDefault.members[person]
-                majProfilPerson = PersonFactory.InsertProfileImpression(majProfilPerson, expPerson)
-                InteractDefault.do.SetTo(majProfilPerson)
+
+            if option:
+                for person in dest:
+                    majProfilPerson = InteractDefault.members[person]
+                    majProfilPerson = PersonFactory.InsertProfileImpression(majProfilPerson, expPerson)
+                    InteractDefault.do.SetTo(majProfilPerson)
 
             for personKey in InteractDefault.members.keys():
                 if not exp == personKey or not dest[0] == personKey:

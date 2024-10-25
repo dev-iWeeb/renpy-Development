@@ -242,7 +242,7 @@ class Test_Staging(TestCase):
         resultDiscuss = self.Staging.GetAction().Speak(self.nameP1, self.nameP2)
         self.assertEqual(f'{self.profilpP2Fin}',f'{resultDiscuss.GetTo()[0].GetProfile()}')
 
-    def test_e_if_speaker_interact_with_allbody(self):
+    def test_e_if_speaker_interact_with_allOther(self):
         self.Staging.ToSTagePerson(self.nameP1)
         self.Staging.ToSTagePerson(self.nameP2)
         self.Staging.ToSTagePerson(self.nameP3)
