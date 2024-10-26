@@ -136,18 +136,18 @@ class PersonFactory:
         return ObjetPerson
 
     @staticmethod
-    def InsertProfileImpression(ObjetPersonDest: Person, ObjetPersonExp: Person, configProfil={}):
+    def InsertProfileRelation(ObjetPersonDest: Person, ObjetPersonExp: Person, configProfil={}):
         profil = dict()
-        key_impressions = "impressions"
-        profil[key_impressions] = dict()
-        profil[key_impressions][ObjetPersonExp.GetName()] = configProfil
+        key_relation = "relation"
+        profil[key_relation] = dict()
+        profil[key_relation][ObjetPersonExp.GetName()] = configProfil
 
-        if not key_impressions in ObjetPersonDest.GetProfile():
+        if not key_relation in ObjetPersonDest.GetProfile():
             ObjetPersonDest.SetProfile(profil)
         else:
-            if not ObjetPersonExp.GetName() in ObjetPersonDest.GetProfile()[key_impressions]:
+            if not ObjetPersonExp.GetName() in ObjetPersonDest.GetProfile()[key_relation]:
                 newAddPersonProfil = ObjetPersonDest.GetProfile()
-                newAddPersonProfil[key_impressions][ObjetPersonExp.GetName()] = configProfil
+                newAddPersonProfil[key_relation][ObjetPersonExp.GetName()] = configProfil
                 ObjetPersonDest.SetProfile(newAddPersonProfil)
             else:
                 # TODO Repasser pour une évolution  (maj des statistiques)
@@ -172,8 +172,8 @@ class PersonFactoryStd:
                          Pfactory.GetProfile(), Pfactory.GetSurname(), bodycount)
 
     @staticmethod
-    def InsertProfileImpressionStd(ObjetPersonDest: Person, ObjetPersonExp: Person, configProfil={}):
-        return PersonFactory.InsertProfileImpression(ObjetPersonDest, ObjetPersonExp, configProfil)
+    def InsertProfileRelationStd(ObjetPersonDest: Person, ObjetPersonExp: Person, configProfil={}):
+        return PersonFactory.InsertProfileRelation(ObjetPersonDest, ObjetPersonExp, configProfil)
 
 
 class Scene:
@@ -706,13 +706,13 @@ class InteractDefault:
             if option:
                 for person in dest:
                     majProfilPerson = InteractDefault.members[person]
-                    majProfilPerson = PersonFactory.InsertProfileImpression(majProfilPerson, expPerson)
+                    majProfilPerson = PersonFactory.InsertProfileRelation(majProfilPerson, expPerson)
                     InteractDefault.do.SetTo(majProfilPerson)
 
             for personKey in InteractDefault.members.keys():
                 if not exp == personKey or not dest[0] == personKey:
                     majProfilPerson = InteractDefault.members[personKey]
-                    majProfilPerson = PersonFactory.InsertProfileImpression(majProfilPerson, expPerson)
+                    majProfilPerson = PersonFactory.InsertProfileRelation(majProfilPerson, expPerson)
                     InteractDefault.members[personKey] = majProfilPerson
 
         return InteractDefault.do

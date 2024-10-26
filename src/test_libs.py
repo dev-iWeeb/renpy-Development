@@ -168,21 +168,21 @@ class Test_PersonProfileFactory(TestCase):
         self.nameP1 = "PtitJean"
         self.nameP2 = "Constante"
         self.nameP3 = "Gus"
-        self.key_impressions = "impressions"
+        self.key_relation = "relation"
         self.pP1 = PersonStd(self.nameP1, "Fleuriste")
         self.pP2 = PersonStd(self.nameP2, "Etudiant", 16)
         self.pP3 = PersonStd(self.nameP3 ,"Journaliste")
-        self.profilpP1Fin = { self.key_impressions: {self.nameP1:{}}}
-        self.profilpP3 = { self.key_impressions: {}}
-        self.profilpP3Fin ={ self.key_impressions: {self.nameP2:{}}}
+        self.profilpP1Fin = { self.key_relation: {self.nameP1:{}}}
+        self.profilpP3 = { self.key_relation: {}}
+        self.profilpP3Fin ={ self.key_relation: {self.nameP2:{}}}
         self.pP3.SetProfile(self.profilpP3)
 
-    def test_a_if_impressionProfil_is_created_on_Person(self):
-        self.pP2 = PersonFactory.InsertProfileImpression(self.pP2,self.pP1)
+    def test_a_if_relationProfil_is_created_on_Person(self):
+        self.pP2 = PersonFactory.InsertProfileRelation(self.pP2,self.pP1)
         self.assertEqual(f'{self.profilpP1Fin}', f'{self.pP2.GetProfile()}')
 
-    def test_b_if_profilPerson_is_created_on_impression(self):
-        self.pP3 =PersonFactory.InsertProfileImpression(self.pP3, self.pP2)
+    def test_b_if_profilPerson_is_created_on_relation(self):
+        self.pP3 =PersonFactory.InsertProfileRelation(self.pP3, self.pP2)
         self.assertEqual( f'{self.profilpP3Fin}', f'{self.pP3.GetProfile()}')
 
     def test_c_if_profilPerson_must_be_updated(self):
@@ -197,12 +197,12 @@ class Test_Staging(TestCase):
         self.nameP1 = "Constante"
         self.nameP2 = "PtitJean"
         self.nameP3 = "Gus"
-        self.key_impressions = "impressions"
+        self.key_relation = "relation"
         self.members = [self.nameP2, self.nameP3]
         self.pP1 = PersonStd("Constante","Fleuriste")
         self.pP2 = PersonStd("PtitJean","Etudiant",16)
         self.pP3 = PersonStd(self.nameP3,"Etudiant", 14)
-        self.profilpP2Fin = {self.key_impressions: {self.nameP1: {}}}
+        self.profilpP2Fin = {self.key_relation: {self.nameP1: {}}}
         self.community = {self.nameP1: self.pP1, self.nameP2: self.pP2, self.nameP3: self.pP3}
         self.Staging = Staging( self.community,InteractDefault)
 
@@ -235,7 +235,7 @@ class Test_Staging(TestCase):
         self.assertEqual(self.nameP2, responseCheck.GetFrom().GetName())
         self.assertEqual(self.nameP1, responseCheck.GetTo()[0].GetName())
 
-    def test_if_impression_profil_is_created_in_person_when_speaking(self):
+    def test_if_relation_profil_is_created_in_person_when_speaking(self):
         self.Staging.ToSTagePerson(self.nameP1)
         self.Staging.ToSTagePerson(self.nameP2)
         self.Staging.ToSTagePerson(self.nameP3)
@@ -250,8 +250,8 @@ class Test_Staging(TestCase):
         self.pP5 = PersonFactoryStd.create(self.nameP5, "Teacher")
         self.community[self.nameP5]= self.pP5
         self.Staging.ToSTagePerson(self.nameP5)
-        self.key_impressions = "impressions"
-        self.profilpFin = {self.key_impressions: {self.nameP1: {}}}
+        self.key_relation = "relation"
+        self.profilpFin = {self.key_relation: {self.nameP1: {}}}
         self.Staging.GetAction().Speak(self.nameP1, self.nameP2)
         profileP5 = self.Staging.GetPersons()[self.nameP5].GetProfile()
         profileP3 = self.Staging.GetPersons()[self.nameP3].GetProfile()
