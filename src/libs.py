@@ -6,7 +6,8 @@ CONST_DEFAULT_INIT_STAGE = 0
 CONST_START_CYCLE_AT = 1
 CONST_DEFAULT_BODYCOUNT = 0
 CONST_SYST_MODULE_ENABLE = True
-CONST_SYNCHRO_PROFILE_ALLBODY = True #TODO réaranger ce mode peut être trop général..
+CONST_SPEAK_ANSWER_DIAG_IS_SAME = False
+CONST_SYNC_RELATION_ALLBODY = True  #TODO réaranger ce mode peut être trop général..
 
 CONFIG_STATISTIC = ["Affinity", "Colère", "Santé", "Assurance"]
 
@@ -677,13 +678,16 @@ class InteractDefault:
         if not InteractDefault.valid == None and not InteractDefault.do == None and len(InteractDefault.members)>0:
             if exp == InteractDefault.do.GetFrom().GetName():
                 newExp = InteractDefault.do.GetTo()[0].GetName()
-                result = InteractDefault.Core(newExp, exp)
+                relationType = False
+                if CONST_SPEAK_ANSWER_DIAG_IS_SAME:
+                    relationType = True
+                result = InteractDefault.Core(newExp, exp,relationType)
                 InteractDefault.valid = None
                 #TODO à défaut, on définira la première personne de la liste comme personne principal
         return result
 
     @staticmethod
-    def Core(exp, dest, option=CONST_SYNCHRO_PROFILE_ALLBODY):
+    def Core(exp, dest, relationType,option=CONST_SYNC_RELATION_ALLBODY):
         InteractDefault.do = Do()
         InteractDefault.valid = True
 
@@ -703,17 +707,21 @@ class InteractDefault:
             expPerson = InteractDefault.members[exp]
             InteractDefault.do.SetFrom(expPerson)
 
-            if option:
-                for person in dest:
-                    majProfilPerson = InteractDefault.members[person]
+            for person in dest:
+                majProfilPerson = InteractDefault.members[person]
+                if relationType:
                     majProfilPerson = PersonFactory.InsertProfileRelation(majProfilPerson, expPerson)
-                    InteractDefault.do.SetTo(majProfilPerson)
+                else:
+                    pass  # TODO évolution sur le mode de communication
 
-            for personKey in InteractDefault.members.keys():
-                if not exp == personKey or not dest[0] == personKey:
-                    majProfilPerson = InteractDefault.members[personKey]
-                    majProfilPerson = PersonFactory.InsertProfileRelation(majProfilPerson, expPerson)
-                    InteractDefault.members[personKey] = majProfilPerson
+                InteractDefault.do.SetTo(majProfilPerson)
+
+            if option:
+                for personKey in InteractDefault.members.keys():
+                    if not exp == personKey or not dest[0] == personKey:
+                        majProfilPerson = InteractDefault.members[personKey]
+                        majProfilPerson = PersonFactory.InsertProfileRelation(majProfilPerson, expPerson)
+                        InteractDefault.members[personKey] = majProfilPerson
 
         return InteractDefault.do
 
