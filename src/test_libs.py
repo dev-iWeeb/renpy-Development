@@ -264,6 +264,12 @@ class Test_Staging(TestCase):
         resultDiscuss = self.Staging.GetAction().Speak(self.nameP3, self.nameP1)
         self.assertEqual("{}", f'{resultDiscuss.GetFrom().GetProfile()}')
 
+    def test_if_personPlayer_meditate(self):
+        self.Staging.ToSTagePerson(self.nameP1)
+        self.Staging.ToSTagePerson(self.nameP2)
+        resultMeditate= self.Staging.GetAction().Meditate(self.nameP1)
+        self.assertEqual(f'{self.nameP1}',f'{resultMeditate.GetFrom().GetName()}')
+        self.assertEqual(f'{self.nameP1}', f'{resultMeditate.GetTo()[0].GetName()}')
 
 
     def tearDown(self):

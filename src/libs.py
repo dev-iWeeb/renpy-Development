@@ -683,7 +683,7 @@ class InteractDefault:
     def Answer(exp):
         result = []
         if not InteractDefault.valid == None and not InteractDefault.do == None and len(InteractDefault.members)>0:
-            if exp == InteractDefault.do.GetFrom().GetName():
+            if exp == InteractDefault.do.GetFrom().GetName() and not exp == InteractDefault.do.GetTo()[0].GetName():
                 newExp = InteractDefault.do.GetTo()[0].GetName()
                 relationType = False
                 if CONST_SPEAK_ANSWER_DIAG_IS_SAME:
@@ -691,6 +691,13 @@ class InteractDefault:
                 result = InteractDefault.Core(newExp, exp,relationType)
                 InteractDefault.valid = None
                 #TODO à défaut, on définira la première personne de la liste comme personne principal
+        return result
+
+    def Meditate (exp):
+        result = []
+        relationType = False
+        result = InteractDefault.Core(exp, exp, relationType)
+
         return result
 
     @staticmethod
