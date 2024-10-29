@@ -199,7 +199,7 @@ class Test_Staging(TestCase):
         self.nameP3 = "Gus"
         self.key_relation = "relation"
         self.members = [self.nameP2, self.nameP3]
-        self.pP1 = PersonStd("Constante","Fleuriste", 26,True)
+        self.pP1 = PersonStd("Constante","Fleuriste", 26,False)
         self.pP2 = PersonStd("PtitJean","Etudiant",16)
         self.pP3 = PersonStd(self.nameP3,"Etudiant", 14)
         self.profilpP2Fin = {self.key_relation: {self.nameP1: {}}}
@@ -257,6 +257,13 @@ class Test_Staging(TestCase):
         profileP3 = self.Staging.GetPersons()[self.nameP3].GetProfile()
         self.assertEqual(f'{self.profilpFin}', f'{profileP5}')
         self.assertEqual(f'{self.profilpFin}', f'{profileP3}')
+
+    def test_if_personPnj_speak_to_personPlayer_first(self):
+        self.Staging.ToSTagePerson(self.nameP1)
+        self.Staging.ToSTagePerson(self.nameP3)
+        resultDiscuss = self.Staging.GetAction().Speak(self.nameP3, self.nameP1)
+        self.assertEqual("{}", f'{resultDiscuss.GetFrom().GetProfile()}')
+
 
 
     def tearDown(self):

@@ -39,12 +39,12 @@ class Stats:
         return self.__stats
 
     def __str__(self):
-        return self.__stats
+        return f'{self.__stats}'
 
 
 class Person:
 
-    def __init__(self, name, occupation, age=CONST_DEFAULT_AGE, pnj=False, Stats={}, Profile={}, surname="",
+    def __init__(self, name, occupation, age=CONST_DEFAULT_AGE, pnj= True, Stats={}, Profile={}, surname="",
                  ageDefault=CONST_DEFAULT_AGE, legalAge=CONST_DEFAULT_LEGAL_AGE):
         self.__name = name
         self.__ageDefault = ageDefault
@@ -104,7 +104,7 @@ class Person:
 
 class PersonStd(Person):
 
-    def __init__(self, name, occupation, age=CONST_DEFAULT_AGE, pnj = False, Stats={}, Profile={}, surname="",
+    def __init__(self, name, occupation, age=CONST_DEFAULT_AGE, pnj = True, Stats={}, Profile={}, surname="",
                  bodycount=CONST_DEFAULT_BODYCOUNT, ageDefault=CONST_DEFAULT_AGE, legalAge=CONST_DEFAULT_LEGAL_AGE):
         super().__init__(name, occupation, age, pnj, Stats, Profile, surname, ageDefault, legalAge)
         self.SetBodyCount(bodycount)
@@ -122,7 +122,7 @@ class PersonStd(Person):
 class PersonFactory:
 
     @staticmethod
-    def create(name, occupation, age=CONST_DEFAULT_AGE, pnj = False, personstats=CONFIG_STATISTIC, Profile={}, surname="",
+    def create(name, occupation, age=CONST_DEFAULT_AGE, pnj = True, personstats=CONFIG_STATISTIC, Profile={}, surname="",
                ageDefault=CONST_DEFAULT_AGE, legalAge=CONST_DEFAULT_LEGAL_AGE):
         StatsData = PersonFactory.CreateStats(personstats)
         return Person(name, occupation, age, pnj, StatsData, Profile, surname, ageDefault, legalAge)
@@ -173,7 +173,7 @@ class PersonFactory:
 class PersonFactoryStd:
 
     @staticmethod
-    def create(name, occupation, age=CONST_DEFAULT_AGE, pnj = False, personstats=CONFIG_STATISTIC, profile={}, surname="",
+    def create(name, occupation, age=CONST_DEFAULT_AGE, pnj = True, personstats=CONFIG_STATISTIC, profile={}, surname="",
                bodycount=CONST_DEFAULT_BODYCOUNT, ageDefault=CONST_DEFAULT_AGE, legalAge=CONST_DEFAULT_LEGAL_AGE):
         Pfactory = PersonFactory.create(name, occupation, age, pnj, personstats, profile, surname, ageDefault, legalAge)
         return PersonStd(Pfactory.GetName(), Pfactory.GetOccupation(), Pfactory.GetOlder(), Pfactory.IsPnj(), Pfactory.GetStats(),
@@ -714,18 +714,21 @@ class InteractDefault:
             expPerson = InteractDefault.members[exp]
             InteractDefault.do.SetFrom(expPerson)
 
-            for person in dest:
-                majProfilPerson = InteractDefault.members[person]
-                if relationType:
-                    majProfilPerson = PersonFactory.InsertProfileRelation(majProfilPerson, expPerson)
-                else:
-                    pass  # TODO évolution sur un mode différent de réaction..
+            if not expPerson.IsPnj and relationType:
+                relationType = False
 
-                InteractDefault.do.SetTo(majProfilPerson)
+            for person in dest:
+                majPerson = InteractDefault.members[person]
+                if relationType:
+                    majPerson = PersonFactory.InsertProfileRelation(majPerson, expPerson)
+                else:
+                   print(f' response de dest influence {majPerson.GetStats()}') # TODO évolution sur un mode différent de réaction..
+
+                InteractDefault.do.SetTo(majPerson)
 
             if option:
                 for personKey in InteractDefault.members.keys():
-                    if not exp == personKey or not dest[0] == personKey:
+                    if not (personKey == expPerson.GetName()) and not personKey == dest[0]:
                         majProfilPerson = InteractDefault.members[personKey]
                         majProfilPerson = PersonFactory.InsertProfileRelation(majProfilPerson, expPerson)
                         InteractDefault.members[personKey] = majProfilPerson
