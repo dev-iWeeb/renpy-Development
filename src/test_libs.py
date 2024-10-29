@@ -199,7 +199,7 @@ class Test_Staging(TestCase):
         self.nameP3 = "Gus"
         self.key_relation = "relation"
         self.members = [self.nameP2, self.nameP3]
-        self.pP1 = PersonStd("Constante","Fleuriste")
+        self.pP1 = PersonStd("Constante","Fleuriste", 26,True)
         self.pP2 = PersonStd("PtitJean","Etudiant",16)
         self.pP3 = PersonStd(self.nameP3,"Etudiant", 14)
         self.profilpP2Fin = {self.key_relation: {self.nameP1: {}}}

@@ -44,13 +44,14 @@ class Stats:
 
 class Person:
 
-    def __init__(self, name, occupation, age=CONST_DEFAULT_AGE, Stats={}, Profile={}, surname="",
+    def __init__(self, name, occupation, age=CONST_DEFAULT_AGE, pnj=False, Stats={}, Profile={}, surname="",
                  ageDefault=CONST_DEFAULT_AGE, legalAge=CONST_DEFAULT_LEGAL_AGE):
         self.__name = name
         self.__ageDefault = ageDefault
         self.__legalAge = legalAge
         self.SetStats(Stats)
         self.SetOlder(age)
+        self.SetPnj(pnj)
         self.SetOccupation(occupation)
         self.SetSurname(surname)
         self.SetProfile(Profile)
@@ -66,6 +67,12 @@ class Person:
             self.__older = older
         else:
             self.__older = self.__legalAge
+
+    def SetPnj(self, pnj):
+        self.__Pnj = pnj
+
+    def IsPnj(self):
+        return self.__Pnj
 
     def SetProfile(self, Profile):
         self.__Profile = Profile
@@ -97,9 +104,9 @@ class Person:
 
 class PersonStd(Person):
 
-    def __init__(self, name, occupation, age=CONST_DEFAULT_AGE, Stats={}, Profile={}, surname="",
+    def __init__(self, name, occupation, age=CONST_DEFAULT_AGE, pnj = False, Stats={}, Profile={}, surname="",
                  bodycount=CONST_DEFAULT_BODYCOUNT, ageDefault=CONST_DEFAULT_AGE, legalAge=CONST_DEFAULT_LEGAL_AGE):
-        super().__init__(name, occupation, age, Stats, Profile, surname, ageDefault, legalAge)
+        super().__init__(name, occupation, age, pnj, Stats, Profile, surname, ageDefault, legalAge)
         self.SetBodyCount(bodycount)
 
     def SetBodyCount(self, bodycount):
@@ -115,10 +122,10 @@ class PersonStd(Person):
 class PersonFactory:
 
     @staticmethod
-    def create(name, occupation, age=CONST_DEFAULT_AGE, personstats=CONFIG_STATISTIC, Profile={}, surname="",
+    def create(name, occupation, age=CONST_DEFAULT_AGE, pnj = False, personstats=CONFIG_STATISTIC, Profile={}, surname="",
                ageDefault=CONST_DEFAULT_AGE, legalAge=CONST_DEFAULT_LEGAL_AGE):
         StatsData = PersonFactory.CreateStats(personstats)
-        return Person(name, occupation, age, StatsData, Profile, surname, ageDefault, legalAge)
+        return Person(name, occupation, age, pnj, StatsData, Profile, surname, ageDefault, legalAge)
 
     @staticmethod
     def CreateStats(Statistics, value=CONST_DEFAULT_STATISTIC):
@@ -166,10 +173,10 @@ class PersonFactory:
 class PersonFactoryStd:
 
     @staticmethod
-    def create(name, occupation, age=CONST_DEFAULT_AGE, personstats=CONFIG_STATISTIC, profile={}, surname="",
+    def create(name, occupation, age=CONST_DEFAULT_AGE, pnj = False, personstats=CONFIG_STATISTIC, profile={}, surname="",
                bodycount=CONST_DEFAULT_BODYCOUNT, ageDefault=CONST_DEFAULT_AGE, legalAge=CONST_DEFAULT_LEGAL_AGE):
-        Pfactory = PersonFactory.create(name, occupation, age, personstats, profile, surname, ageDefault, legalAge)
-        return PersonStd(Pfactory.GetName(), Pfactory.GetOccupation(), Pfactory.GetOlder(), Pfactory.GetStats(),
+        Pfactory = PersonFactory.create(name, occupation, age, pnj, personstats, profile, surname, ageDefault, legalAge)
+        return PersonStd(Pfactory.GetName(), Pfactory.GetOccupation(), Pfactory.GetOlder(), Pfactory.IsPnj(), Pfactory.GetStats(),
                          Pfactory.GetProfile(), Pfactory.GetSurname(), bodycount)
 
     @staticmethod
@@ -712,7 +719,7 @@ class InteractDefault:
                 if relationType:
                     majProfilPerson = PersonFactory.InsertProfileRelation(majProfilPerson, expPerson)
                 else:
-                    pass  # TODO évolution sur le mode de communication
+                    pass  # TODO évolution sur un mode différent de réaction..
 
                 InteractDefault.do.SetTo(majProfilPerson)
 
